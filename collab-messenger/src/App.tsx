@@ -1,35 +1,61 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import { FC, useState, useEffect } from 'react'
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth } from './config/firebase-setup';
+import { getUserData } from './services/user-services';
+import Register from './Views/Register/Register';
+import { User } from './types/types';
+import { User as FirebaseUser } from 'firebase/auth';
+import { AppContext } from './content/AppContext';
+import Loading from './Views/Loading/Loading';
 
-function App() {
-  const [count, setCount] = useState(0)
+interface AppContextInterface {
+  user: FirebaseUser | null;
+  userData: User | null;
+  setContext?: React.Dispatch<React.SetStateAction<AppContextInterface>>;
+}
+
+const App: FC = () => {
+  const [appContext, setContext] = useState<AppContextInterface>({
+    user: null,
+    userData: null,
+  });
+
+  const [user, loading] = useAuthState(auth);
+  const [showLoading, setShowLoading] = useState(true);
+
+  useEffect(() => {
+    if (user) {
+      getUserData(user.uid)
+        .then((userData) => {
+          if (userData) {
+            setContext({
+              user,
+              userData,
+            });
+          }
+          setShowLoading(false);
+        });
+    } else {
+      setShowLoading(false);
+    }
+  }, [user]);
+
+
+  if ((loading && !appContext.userData && !appContext.user) || showLoading) {
+    return <Loading />;
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}!
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <AppContext.Provider value={{ ...appContext, setContext }}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/register" element={<Register />} />
+        </Routes>
+      </BrowserRouter>
+    </AppContext.Provider>
+  );
+};
 
 export default App
