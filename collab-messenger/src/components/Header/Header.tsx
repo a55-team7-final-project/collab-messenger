@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { auth } from '../../config/firebase-setup';
-import { AppContext } from '../../content/AppContext';
+import { AppContext } from '../../context/AppContext';
 import { Button, Grid, Input } from '@chakra-ui/react';
 import { MdNotificationsActive, MdOutlineDiversity2 } from 'react-icons/md';
 

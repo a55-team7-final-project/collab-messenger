@@ -10,7 +10,7 @@ import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 import { User } from './types/types';
 import { User as FirebaseUser } from 'firebase/auth';
-import { AppContext } from './content/AppContext';
+import { AppContext } from './context/AppContext';
 import Loading from './Views/Loading/Loading';
 import Login from './Views/Login/Login';
 
