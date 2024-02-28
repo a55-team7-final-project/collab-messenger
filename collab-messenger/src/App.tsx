@@ -5,6 +5,9 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from './config/firebase-setup';
 import { getUserData } from './services/user-services';
 import Register from './Views/Register/Register';
+import Home from './Views/Home/Home';
+import Header from './components/Header/Header';
+import Footer from './components/Footer/Footer';
 import { User } from './types/types';
 import { User as FirebaseUser } from 'firebase/auth';
 import { AppContext } from './content/AppContext';
@@ -56,6 +59,14 @@ const App: FC = () => {
                 <Route path="/" element={<Login />} />
             </Routes>
         </BrowserRouter>
+      <BrowserRouter>
+        <Header />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/register" element={<Register />} />
+        </Routes>
+        <Footer />
+      </BrowserRouter>
     </AppContext.Provider>
 );
 
