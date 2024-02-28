@@ -9,6 +9,7 @@ import { User } from './types/types';
 import { User as FirebaseUser } from 'firebase/auth';
 import { AppContext } from './content/AppContext';
 import Loading from './Views/Loading/Loading';
+import Login from './Views/Login/Login';
 
 interface AppContextInterface {
   user: FirebaseUser | null;
@@ -49,13 +50,15 @@ const App: FC = () => {
 
   return (
     <AppContext.Provider value={{ ...appContext, setContext }}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/register" element={<Register />} />
-        </Routes>
-      </BrowserRouter>
+        <BrowserRouter>
+            <Routes>
+                <Route path="/register" element={<Register />} />
+                <Route path="/" element={<Login />} />
+            </Routes>
+        </BrowserRouter>
     </AppContext.Provider>
-  );
+);
+
 };
 
 export default App
