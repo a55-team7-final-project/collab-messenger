@@ -53,23 +53,17 @@ const App: FC = () => {
 
   return (
     <AppContext.Provider value={{ ...appContext, setContext }}>
-        <BrowserRouter>
-            <Routes>
-                <Route path="/register" element={<Register />} />
-                <Route path="/" element={<Login />} />
-            </Routes>
-        </BrowserRouter>
       <BrowserRouter>
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/" element={<Login />} />
         </Routes>
         <Footer />
       </BrowserRouter>
     </AppContext.Provider>
-);
-
+  );
 };
 
 export default App
