@@ -21,6 +21,10 @@ export default function CreateGroup () {
     }
 
     const createGroupClick = async () => {
+        if (group.name.length === 0) {
+            setErrorMessage('Name must be between 3 and 40 characters');
+            return;
+        }
         if (errorMessage !== null) return
         if ((await getGroupByName(group.name)).length > 0) {
             setErrorMessage('Group with this name already exists');
