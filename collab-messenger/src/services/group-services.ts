@@ -8,10 +8,11 @@ export const addGroup = async (owner: string, name: string) => {
         name,
         createdOn: Date.now(),
         members: {},
-        channels: {}
+        channels: {default: {}}
     }
 
     group.members[owner] = true;
+    group.channels.default[owner] = true;
 
     return push(ref(db, 'groups'), group);
 
