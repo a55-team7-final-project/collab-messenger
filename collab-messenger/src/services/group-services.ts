@@ -1,24 +1,22 @@
 import { get, ref, query, orderByChild, push } from "firebase/database";
 import { db } from "../config/firebase-setup";
 
-export const addGroup = async (author: string, name: string, publicity: boolean) => {
+export const addGroup = async (owner: string, name: string) => {
  
     const group = {
-        author,
+        owner,
         name,
-        publicity,
         createdOn: Date.now(),
         members: {},
         channels: {}
     }
 
-    group.members[author] = true;
+    group.members[owner] = true;
 
     return push(ref(db, 'groups'), group);
 
 }
 
-//missing return type for now
 export const getAllGroups = async () => {
     const snapshot = await get(query(ref(db, 'groups'), orderByChild('createdOn')));
 
@@ -39,7 +37,6 @@ export const getAllGroups = async () => {
     return groups;
 }
 
-//missing return type for now
 export const getGroupById = async (id: string) => {
 
     const snapshot = await get(ref(db, `groups/${id}`));
@@ -56,4 +53,12 @@ export const getGroupById = async (id: string) => {
     };
 
     return group;
+};
+
+export const getGroupByName = async (name: string) => {
+
+    const allGroups = await getAllGroups();
+    const desiredGroup = allGroups.filter(group => group.name === name);
+    
+    return desiredGroup;
 };
