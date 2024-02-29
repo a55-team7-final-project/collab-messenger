@@ -27,8 +27,7 @@ const Login: React.FC = () => {
     useEffect(() => {
         if (userData) {
             setUserLoggedIn(
-                // `Welcome back, ${userData.firstName} ${userData.lastName}`
-                'Welcome back!'
+                `Welcome back, ${userData.firstName} ${userData.lastName}`
             );
         }
     }, [userData, setUserLoggedIn]);
