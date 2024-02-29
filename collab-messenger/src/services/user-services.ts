@@ -29,15 +29,16 @@ export const createUserHandle = (handle: string, uid: string, email: string, fir
 
 export const getUserData = async (uid: string): Promise<User | null> => {
     const snapshot = await get(query(ref(db, `users`), orderByChild('uid'), equalTo(uid)));
-
+    
     if (!snapshot.exists()) {
         return null;
     }
 
+    const userData = snapshot.val()[Object.keys(snapshot.val())[0]];
+
     const user = {
-        uid,
-        ...snapshot.val(),
-        createdOn: new Date(snapshot.val().createdOn).toString(),
+        ...userData,
+        createdOn: new Date(userData.createdOn).toString(),
     };
 
     return user;
