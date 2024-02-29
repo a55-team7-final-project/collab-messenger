@@ -27,6 +27,9 @@ const Register = () => {
     }
 
     const register = async () => {
+        setNoCredentials(false);
+        setErrorMessage(null);
+
         if (!form.email || !form.password) {
             setNoCredentials(true);
             return console.log("Please provide the requested details in order to sign up.");
@@ -37,7 +40,7 @@ const Register = () => {
             return;
         }
         if (!validatePassword(form.password)) {
-            setErrorMessage('Your password does not meet the requirements.');
+            setErrorMessage('Your password does not meet the requirements. It should be more than 5 characters long.');
             return;
         }
 
