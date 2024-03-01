@@ -39,7 +39,7 @@ const Login: React.FC = () => {
 
         if (!form.email || !form.password) {
             setNoCredentials(
-                "Enter your email and password to log in. If you don't have an account, register."
+                "Enter your email and password to log in."
             );
             return;
         }

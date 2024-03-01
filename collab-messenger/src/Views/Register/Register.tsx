@@ -66,7 +66,7 @@ const Register = () => {
             const user = await getUserByHandle(form.username);
             if (user) {
                 setUserExists(true);
-                setErrorMessage(`User with handle ${form.username} already exists. Please choose another username.`);
+                setErrorMessage(`Username ${form.username} already exists. Please choose another username.`);
                 return;
             }
             const credentials = await registerUser(form.email, form.password) as { user: { uid: string } };
@@ -102,10 +102,10 @@ const Register = () => {
                 <input value={form.password} onChange={updateForm('password')} type="password" name="password" id="password" placeholder="Password" />
                 <label htmlFor="phoneNumber">Phone Number</label>
                 <input value={form.phoneNumber} onChange={updateForm('phoneNumber')} type="text" name="phoneNumber" id="phoneNumber" placeholder="Phone Number (optional)" />
-                {userExists && <p>User with that username already exists. Please choose another username.</p>}
                 {emailExists && <p>Email is already being used. Go to Login page or try another email.</p>}
-                {noCredentials && <p>Please provide the requested details in order to sign up.</p>}
                 {errorMessage && <p>{errorMessage}</p>}
+                {userExists && <p>{userExists}</p>}
+                {noCredentials && <p>{noCredentials}</p>}
                 {isLoading && <p>Loading...</p>}
                 <button type="submit" disabled={isLoading} onClick={register}>Register</button>
             </div>
