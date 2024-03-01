@@ -6,7 +6,7 @@ export default function SingleGroup ({group}) {
     const navigate = useNavigate();
 
     const onClick = () => {
-        navigate(`/${group.name}`);
+        navigate(`/${group.id}`);
     }
     return (
         <Box border="1px" borderColor="gray.200" borderRadius="md" p={4} onClick={onClick}>
