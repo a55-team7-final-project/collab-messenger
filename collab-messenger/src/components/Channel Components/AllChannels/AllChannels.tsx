@@ -11,8 +11,13 @@ export default function AllChannels ({groupId}) {
     const [allChannels, setAllChannels] = useState(null);
 
     useEffect(() => {
-        getAllGroupChannels(groupId).then(setAllChannels);
-    }, [groupId]);
+        if (userData) {
+        getAllGroupChannels(groupId).then(channels => {
+            const filtered = channels.filter(channel => channel.members.includes(userData.handle));
+            setAllChannels(filtered);
+        })
+        }
+    }, [groupId, userData]);
 
     return allChannels && userData && (
         <>
