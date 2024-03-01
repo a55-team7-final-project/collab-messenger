@@ -19,10 +19,10 @@ export const getUserByHandle = async (handle: string): Promise<User | null> => {
     return user;
 }
 
-export const createUserHandle = (handle: string, uid: string, email: string, firstName: string, lastName: string): Promise<void> => {
+export const createUserHandle = (handle: string, uid: string, email: string, firstName: string, lastName: string, phoneNumber: string): Promise<void> => {
     return set(ref(db, `users/${handle}`),
         {
-            handle, uid, email, firstName, lastName, createdOn: new Date().valueOf()
+            handle, uid, email, firstName, lastName, phoneNumber, createdOn: new Date().valueOf()
         }
     );
 }

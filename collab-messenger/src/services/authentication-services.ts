@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, getAuth, UserCredential } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, getAuth, UserCredential, fetchSignInMethodsForEmail } from "firebase/auth";
 import { auth } from "../config/firebase-setup.js";
 
 export const registerUser = async (email: string, password: string): Promise<UserCredential> => {
@@ -29,10 +29,20 @@ export const logoutUser = async () => {
 }
 
 export const validateEmail = (email: string): boolean => {
-    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(email.toLowerCase());
+    const characters = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return characters.test(email.toLowerCase());
 }
 
 export const validatePassword = (password: string): boolean => {
     return password.length >= 5;
+}
+
+export const emailExist = async (email: string): Promise<boolean> => {
+    try {
+        const response = await fetchSignInMethodsForEmail(auth, email);
+        return response.length > 0;
+    } catch (error) {
+        console.error("Error checking email: ", error);
+        throw error;
+    }
 }

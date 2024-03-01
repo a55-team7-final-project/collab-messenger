@@ -80,11 +80,11 @@ const Login: React.FC = () => {
     };
 
     return (
-        <div className="register-container">
-            <div className="register-header">
+        <div className="login-container">
+            <div className="login-header">
                 <h1>{userLoggedIn ? userLoggedIn : 'Login'}</h1>
             </div>
-            <div className="register-form">
+            <div className="login-form">
                 {userData ? (
                     <>
                         <p>Let's chat, schedule and attend meetings.</p>
@@ -114,7 +114,7 @@ const Login: React.FC = () => {
                         />
                         {invalidEmail && <p>Invalid email</p>}
                         {invalidPassword && <p>Invalid password</p>}
-                        {noCredentials && <p dangerouslySetInnerHTML={{ __html: noCredentials.replace('register', '<a href="/register">register</a>') }} />}
+                        {noCredentials && <p dangerouslySetInnerHTML={{ __html: noCredentials.replace('login', '<a href="/login">login</a>') }} />}
                         {isLoading && <p>Loading...</p>}
                         <button onClick={login}>Login</button>
                     </>
