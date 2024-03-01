@@ -39,8 +39,8 @@ export default function CreateGroup () {
             <>
                 <label htmlFor="group-name"></label>
                 <input value={group.name} onChange={handleInputChange} type="text" name="group-name" id="group-name" placeholder="Enter group name" />
-                {errorMessage && <p>{errorMessage}</p>}
                 <button id="create-group-button" onClick={createGroupClick}>Create Group</button>
+                {errorMessage && <p>{errorMessage}</p>}
             </>
         )
     );

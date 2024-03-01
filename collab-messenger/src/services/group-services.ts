@@ -1,6 +1,24 @@
 import { get, ref, query, orderByChild, push, set, remove } from "firebase/database";
 import { db } from "../config/firebase-setup";
 
+//addGroupChannel function defined before addGroup!
+export const addGroupChannel = async (groupId: string, owner: string, name: string, publicity: boolean) => {
+ 
+    const channel = {
+        name,
+        createdOn: Date.now(),
+        members: {},
+        publicity
+    }
+
+    channel.members[owner] = true;
+
+    return push(ref(db, `groups/${groupId}/channels`), channel);
+
+}
+
+//general group functions
+
 export const addGroup = async (owner: string, name: string) => {
  
     const group = {
@@ -8,14 +26,16 @@ export const addGroup = async (owner: string, name: string) => {
         name,
         createdOn: Date.now(),
         members: {},
-        channels: {default: {}}
+        channels: {}
     }
 
     group.members[owner] = true;
-    group.channels.default[owner] = true;
 
-    return push(ref(db, 'groups'), group);
+    const newGroupRef = await push(ref(db, 'groups'), group);
 
+    await addGroupChannel(newGroupRef.key, owner, 'General', true);
+
+    return newGroupRef;
 }
 
 export const getAllGroups = async () => {
@@ -77,20 +97,41 @@ export const leaveGroup = async (groupId: string, userHandle: string) => {
 
 //group channel functions
 
-export const addGroupChannel = async (groupId: string, name: string, publicity: boolean, owner: string) => {
- 
-    const channel = {
-        name,
-        createdOn: Date.now(),
-        members: {},
-        publicity
+export const getAllGroupChannels = async (groupId: string) => {
+    const snapshot = await get(query(ref(db, `groups/${groupId}/channels`), orderByChild('createdOn')));
+
+    if (!snapshot.exists()) {
+        return [];
     }
 
-    channel.members[owner] = true;
+    const allGroupChannels = snapshot.val();
 
-    return push(ref(db, `groups/${groupId}/channels`), channel);
+    const channels = Object.keys(allGroupChannels).map((key => ({
+        id: key,
+        ...allGroupChannels[key],
+        createdOn: new Date(allGroupChannels[key].createdOn),
+        members: Object.keys(allGroupChannels[key].members)
+        })))
 
+    return channels;
 }
+
+export const getGroupChannelById = async (groupId: string, channelId: string) => {
+
+    const snapshot = await get(ref(db, `groups/${groupId}/channels/${channelId}`));
+    if (!snapshot.exists()) {
+        return null;
+    }
+
+    const channel = {
+        channelId,
+        ...snapshot.val(),
+        createdOn: new Date(snapshot.val().createdOn),
+        members: Object.keys(snapshot.val().members)
+    };
+
+    return channel;
+};
 
 export const joinGroupChannel = async (groupId: string, userHandle: string, channelId: string) => {
     const userRef = ref(db, `groups/${groupId}/channels/${channelId}/members/${userHandle}`);
