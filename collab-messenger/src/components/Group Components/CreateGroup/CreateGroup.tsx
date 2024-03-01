@@ -2,20 +2,18 @@ import { useContext, useState } from "react"
 import { AppContext } from "../../../context/AppContext"
 import { addGroup, getGroupByName } from "../../../services/group-services";
 
-export default function CreateGroup () {
+interface CreateGroupProps {}
 
+const CreateGroup: React.FC<CreateGroupProps> = () => {
     const { userData } = useContext(AppContext);
-    const [errorMessage, setErrorMessage] = useState(null);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const [group, setGroup] = useState<{ name: string }>({ name: '' });
 
-    const [group, setGroup] = useState({
-        name: ''
-    });
-
-    const handleInputChange = (e) => {
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setGroup({...group, name: e.target.value});
         if (e.target.value.length < 3 || e.target.value.length > 40) {
             setErrorMessage('Name must be between 3 and 40 characters');
-            return
+            return;
         }
         setErrorMessage(null);
     }
@@ -25,12 +23,15 @@ export default function CreateGroup () {
             setErrorMessage('Name must be between 3 and 40 characters');
             return;
         }
-        if (errorMessage !== null) return
-        if ((await getGroupByName(group.name)).length > 0) {
+        if (errorMessage !== null) return;
+        
+        const existingGroups = await getGroupByName(group.name);
+        if (existingGroups.length > 0) {
             setErrorMessage('Group with this name already exists');
-            return
+            return;
         }
-        addGroup(userData.handle, group.name);
+        
+        await addGroup(userData!.handle, group.name);
         setGroup({name:''});
     }
 
@@ -44,4 +45,6 @@ export default function CreateGroup () {
             </>
         )
     );
-}
+};
+
+export default CreateGroup;

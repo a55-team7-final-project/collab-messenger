@@ -4,22 +4,31 @@ import { AppContext } from "../../../context/AppContext";
 import SingleGroup from "../SingleGroup/SingleGroup";
 import CreateGroup from "../CreateGroup/CreateGroup";
 
+interface Group {
+    id: string;
+    name: string;
+}
 
-export default function AllGroups () {
+interface AllGroupsProps {}
 
-    // const { userData } = useContext(AppContext);
-    const [allGroups, setAllGroups] = useState([]);
+const AllGroups: React.FC<AllGroupsProps> = () => {
+    const { userData } = useContext(AppContext);
+    const [allGroups, setAllGroups] = useState<Group[]>([]);
 
     useEffect(() => {
-        getAllGroups().then(setAllGroups);
-    }, []);
+        if (userData) {
+            getAllGroups().then(groups => setAllGroups(groups));
+        }
+    }, [userData]);
 
     return (
         <>
-        <CreateGroup/>
-        {allGroups && allGroups.map((group,index) => {
-            return <SingleGroup key={index} group={group}/>
-        })}
+            <CreateGroup/>
+            {allGroups.map((group) => (
+                <SingleGroup key={group.id} group={group}/>
+            ))}
         </>
-    )
-}
+    );
+};
+
+export default AllGroups;
