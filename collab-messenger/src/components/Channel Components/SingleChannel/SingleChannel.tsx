@@ -2,21 +2,21 @@ import { Box, Flex, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
 
-export default function SingleGroup ({group}) {
+export default function SingleChannel ({channel}) {
     const navigate = useNavigate();
 
     const onClick = () => {
-        navigate(`/groups/${group.id}`);
+        // navigate(`/${channel.id}`);
+        console.log('it will navigate to the correct chat');
     }
     return (
         <Box border="1px" borderColor="gray.200" borderRadius="md" p={4} onClick={onClick}>
             <Flex justifyContent="space-between">
-                <Text fontWeight="bold">{group.name}</Text>
-                <Text>Members: {Object.keys(group.members).length}</Text>
+                <Text fontWeight="bold">{channel.name}</Text>
+                <Text>Members: {Object.keys(channel.members).length}</Text>
             </Flex>
             <Flex justifyContent="space-between" mt={2}>
-                <Text>Created By: {group.owner}</Text>
-                <Text>Channels: {Object.keys(group.channels).length}</Text>
+                <Text>{channel.publicity ? 'public' : 'private'}</Text>
             </Flex>
         </Box>
     )
