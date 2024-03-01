@@ -117,6 +117,7 @@ const Login: React.FC = () => {
                         {noCredentials && <p dangerouslySetInnerHTML={{ __html: noCredentials.replace('login', '<a href="/login">login</a>') }} />}
                         {isLoading && <p>Loading...</p>}
                         <button onClick={login}>Login</button>
+                        <p>You do not have an account? <Link to="/register">Register</Link></p>
                     </>
                 )}
             </div>
