@@ -47,7 +47,6 @@ export const getUserData = async (uid: string): Promise<User | null> => {
 export const updateUserDetails = async (username: string, userInfo: { [key: string]: unknown }): Promise<void> => {
     const userRef = ref(db, `users/${username}`);
     await update(userRef, userInfo);
-    console.log(`User details for ${username} have been updated.`);
 }
 
 export const uploadImage = async (userId: string, file: File): Promise<string | null> => {

@@ -3,11 +3,7 @@ import { getAllGroups } from "../../../services/group-services";
 import { AppContext } from "../../../context/AppContext";
 import SingleGroup from "../SingleGroup/SingleGroup";
 import CreateGroup from "../CreateGroup/CreateGroup";
-
-interface Group {
-    id: string;
-    name: string;
-}
+import {Group} from "../../../types/types";
 
 interface AllGroupsProps {}
 
@@ -24,8 +20,8 @@ const AllGroups: React.FC<AllGroupsProps> = () => {
     return (
         <>
             <CreateGroup/>
-            {allGroups.map((group) => (
-                <SingleGroup key={group.id} group={group}/>
+            {userData && allGroups.map((group) => (
+                <SingleGroup key={group.id} group={group} currentUser={userData}/>
             ))}
         </>
     );
