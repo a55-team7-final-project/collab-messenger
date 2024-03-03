@@ -1,14 +1,15 @@
 import { useState } from 'react';
-import { uploadImage } from '../../services/user-services';
+import { uploadImage, saveProfilePictureUrl } from '../../services/user-services';
 import { Button } from '@chakra-ui/react';
 
 interface ProfilePictureProps {
     userId: string;
+    imageUrl: string;
 }
 
-const ProfilePicture: React.FC<ProfilePictureProps> = ({ userId }) => {
+const ProfilePicture: React.FC<ProfilePictureProps> = ({ userId, imageUrl }) => {
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
-    const [imageUrl, setImageUrl] = useState<string | null>(null);
+    const [currentImageUrl, setCurrentImageUrl] = useState<string | null>(imageUrl);
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files.length > 0) {
@@ -16,10 +17,13 @@ const ProfilePicture: React.FC<ProfilePictureProps> = ({ userId }) => {
         }
     };
 
+
     const handleUpload = async () => {
         if (selectedFile) {
             const url = await uploadImage(userId, selectedFile);
-            setImageUrl(url);
+            setCurrentImageUrl(url);
+
+            await saveProfilePictureUrl(userId, url);
         }
     };
 
@@ -27,7 +31,7 @@ const ProfilePicture: React.FC<ProfilePictureProps> = ({ userId }) => {
         <div>
             <input type="file" onChange={handleFileChange} />
             <Button onClick={handleUpload}>Upload</Button>
-            {imageUrl && <img src={imageUrl} alt="Profile" />}
+            {currentImageUrl && <img src={currentImageUrl} alt="Profile" />}
         </div>
     );
 };

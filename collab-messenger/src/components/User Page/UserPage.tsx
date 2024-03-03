@@ -27,7 +27,7 @@ const UserPage: React.FC<UserPageProps> = ({ userId }) => {
                 <>
                     <button onClick={() => navigate(-1)}>Go Back</button>
                     <h1>{userData.firstName} {userData.lastName}</h1>
-                    <ProfilePicture userId={userId} />
+                    <ProfilePicture userId={userId} imageUrl={userData.profilePictureUrl} />
                 </>
             ) : (
                 <p>Loading...</p>

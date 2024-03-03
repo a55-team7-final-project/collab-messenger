@@ -63,3 +63,7 @@ export const uploadImage = async (userId: string, file: File): Promise<string | 
     return downloadURL;
 }
 
+export const saveProfilePictureUrl = async (handle: string, url: string): Promise<void> => {
+    const userRef = ref(db, `users/${handle}`);
+    await update(userRef, { profilePictureUrl: url });
+};
