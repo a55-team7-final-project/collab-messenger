@@ -7,7 +7,7 @@ export const addGroupChannel = async (groupId: string, owner: string, name: stri
     const channel = {
         name,
         createdOn: Date.now(),
-        members: {},
+        members: {"bot": `Welcome to ${name}! Be the first to write a message!`},
         publicity
     }
 
@@ -84,14 +84,19 @@ export const getGroupByName = async (name: string) => {
     return desiredGroup;
 };
 
-export const joinGroup = async (groupId: string, userHandle: string) => {
+export const joinGroupById = async (groupId: string, userHandle: string) => {
     const userRef = ref(db, `groups/${groupId}/members/${userHandle}`);
     await set(userRef, true);
 };
 
-export const leaveGroup = async (groupId: string, userHandle: string) => {
+export const leaveGroupById = async (groupId: string, userHandle: string) => {
     const userRef = ref(db, `groups/${groupId}/members/${userHandle}`);
     await remove(userRef);
+};
+
+export const deleteGroupById = async (groupId: string) => {
+    const groupRef = ref(db, `groups/${groupId}`);
+    await remove(groupRef);
 };
 
 
@@ -141,4 +146,16 @@ export const joinGroupChannel = async (groupId: string, userHandle: string, chan
 export const leaveGroupChannel = async (groupId: string, userHandle: string, channelId: string) => {
     const userRef = ref(db, `groups/${groupId}/channels/${channelId}/members/${userHandle}`);
     await remove(userRef);
+};
+
+export const deleteGroupChannelById = async (groupId: string, channelId: string) => {
+    const channelRef = ref(db, `groups/${groupId}/channels/${channelId}`);
+    await remove(channelRef);
+};
+
+// group channel message functions
+
+export const addGroupChannelMessage = async (groupId: string, channelId: string, userHandle: string, text: string) => {
+    const textRef = ref(db, `groups/${groupId}/channels/${channelId}/messages/${userHandle}`);
+    await set(textRef, text);
 };
