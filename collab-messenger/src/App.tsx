@@ -15,6 +15,7 @@ import Loading from './Views/Loading/Loading';
 import Login from './Views/Login/Login';
 import GroupDetailed from './components/Group Components/GroupDetailed/GroupDetailed';
 import UserPage from './components/User Page/UserPage';
+import ChannelDetailed from './components/Channel Components/ChannelDetailed/ChannelDetailed';
 
 interface AppContextInterface {
   user: FirebaseUser | null;
@@ -62,6 +63,7 @@ const App: FC = () => {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/groups/:groupId" element={<GroupDetailed />} />
+          <Route path="/groups/:groupId/channels/:channelId" element={<ChannelDetailed />} />
           <Route path="/profile" element={<UserPage userId={appContext.user?.uid || ''} />} />
         </Routes>
         <Footer />

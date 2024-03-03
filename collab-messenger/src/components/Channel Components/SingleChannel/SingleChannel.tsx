@@ -1,13 +1,15 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 
 export default function SingleChannel ({channel}) {
     const navigate = useNavigate();
 
+    const { groupId } = useParams();
+
     const onClick = () => {
-        // navigate(`/${channel.id}`);
-        console.log('it will navigate to the correct chat');
+        if (groupId) navigate(`/groups/${groupId}/channels/${channel.id}`);
+        // console.log('it will navigate to the correct chat');
     }
     return (
         <Box border="1px" borderColor="gray.200" borderRadius="md" p={4} onClick={onClick}>

@@ -1,11 +1,14 @@
 import { useContext, useState } from "react"
 import { AppContext } from "../../../context/AppContext"
 import { addGroupChannel } from "../../../services/group-services";
+import { useParams } from "react-router-dom";
 
-export default function CreateChannel ({groupId}) {
+export default function CreateChannel () {
 
     const { userData } = useContext(AppContext);
     const [errorMessage, setErrorMessage] = useState(null);
+
+    const { groupId } = useParams();
 
     const [channel, setChannel] = useState({
         name: '',
@@ -37,7 +40,7 @@ export default function CreateChannel ({groupId}) {
     }
 
     return (
-        userData && (
+        userData && groupId && (
             <>
                 <label htmlFor="channel-name"></label>
                 <input value={channel.name} onChange={handleInputChange} type="text" name="channel-name" id="channel-name" placeholder="Enter channel name" />
