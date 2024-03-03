@@ -7,7 +7,8 @@ export const addGroupChannel = async (groupId: string, owner: string, name: stri
     const channel = {
         name,
         createdOn: Date.now(),
-        members: {"bot": `Welcome to ${name}! Be the first to write a message!`},
+        messages: {"bot": `Welcome to ${name}! Be the first to write a message!`},
+        members: {},
         publicity
     }
 
