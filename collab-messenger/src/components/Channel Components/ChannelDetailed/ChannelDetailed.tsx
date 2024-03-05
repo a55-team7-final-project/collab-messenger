@@ -5,6 +5,7 @@ import SingleChannel from "../SingleChannel/SingleChannel";
 import CreateChannel from "../CreateChannel/CreateChannel";
 import SingleChannelText from "../SIngleChannelText/SingleChannelText";
 import { useParams } from "react-router-dom";
+import CreateMessage from "../CreateMessage/CreateMessage";
 
 
 export default function ChannelDetailed () {
@@ -26,6 +27,8 @@ export default function ChannelDetailed () {
         {channel && channel.messages ? Object.keys(channel.messages).map((userHandle, index) => {
             return <SingleChannelText key={index} text={channel.messages[userHandle]} userHandle={userHandle}/>
         }) : <p>No messages</p>}
+        <br />
+        <CreateMessage />
         </>
     )
 }
