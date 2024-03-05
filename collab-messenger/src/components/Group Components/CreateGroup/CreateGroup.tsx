@@ -2,15 +2,15 @@ import { useContext, useState } from "react"
 import { AppContext } from "../../../context/AppContext"
 import { addGroup, getGroupByName } from "../../../services/group-services";
 
-interface CreateGroupProps {}
+interface CreateGroupProps { }
 
 const CreateGroup: React.FC<CreateGroupProps> = () => {
     const { userData } = useContext(AppContext);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
-    const [group, setGroup] = useState<{ name: string }>({ name: '' });
+    const [group, setGroup] = useState<{ name: string, owner: string, id: string }>({ name: '', owner: '', id: '' });
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setGroup({...group, name: e.target.value});
+        setGroup({ ...group, name: e.target.value });
         if (e.target.value.length < 3 || e.target.value.length > 40) {
             setErrorMessage('Name must be between 3 and 40 characters');
             return;
@@ -24,15 +24,15 @@ const CreateGroup: React.FC<CreateGroupProps> = () => {
             return;
         }
         if (errorMessage !== null) return;
-        
+
         const existingGroups = await getGroupByName(group.name);
         if (existingGroups.length > 0) {
             setErrorMessage('Group with this name already exists');
             return;
         }
-        
+
         await addGroup(userData!.handle, group.name);
-        setGroup({name:''});
+        setGroup({ name: '', owner: userData!.handle, id: '' });
     }
 
     return (

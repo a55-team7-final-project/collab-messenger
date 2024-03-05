@@ -3,6 +3,7 @@ import { loginUser } from "../../services/authentication-services";
 import { AppContext } from "../../context/AppContext";
 import { getUserData } from "../../services/user-services";
 import { Link } from "react-router-dom";
+import { Box, Button, FormControl, FormLabel, Input, Text, VStack, Link as ChakraLink } from "@chakra-ui/react";
 
 const Login: React.FC = () => {
     const { userData, setContext } = useContext(AppContext);
@@ -53,6 +54,8 @@ const Login: React.FC = () => {
                     setContext && setContext({
                         user: credentials.user,
                         userData: snapshot,
+                        channels: [], 
+                        meetings: [],
                     });
                 }
             } else {
@@ -80,49 +83,55 @@ const Login: React.FC = () => {
     };
 
     return (
-        <div className="login-container">
-            <div className="login-header">
-                <h1>{userLoggedIn ? userLoggedIn : 'Login'}</h1>
-            </div>
-            <div className="login-form">
-                {userData ? (
-                    <>
-                        <p>Let's chat, schedule and attend meetings.</p>
-                        <p>Access your <Link to="/profile">User Profile</Link>.</p>
-                    </>
-                ) : (
-                    <>
-                        <label htmlFor="email">Email</label>
-                        <input
+        <VStack spacing={4} width="full" maxW="md" margin="auto" mt={10}>
+            <Box textAlign="center">
+                <Text fontSize="2xl">{userLoggedIn ? userLoggedIn : 'Login'}</Text>
+            </Box>
+            {userData ? (
+                <>
+                    <Text>Let's chat, schedule and attend meetings.</Text>
+                    <ChakraLink as={Link} to="/profile">Access your User Profile</ChakraLink>
+                </>
+            ) : (
+                <Box>
+                    <FormControl id="email">
+                        <FormLabel>Email</FormLabel>
+                        <Input
                             type="text"
-                            name="email"
-                            id="email"
                             placeholder="Enter email"
                             value={form.email}
                             onChange={updateForm("email")}
                             onKeyDown={handleKeyPress}
+                            isInvalid={invalidEmail}
                         />
-                        <label htmlFor="password">Password</label>
-                        <input
+                    </FormControl>
+                    <FormControl id="password">
+                        <FormLabel>Password</FormLabel>
+                        <Input
                             type="password"
-                            name="password"
-                            id="password"
                             placeholder="Enter password"
                             value={form.password}
                             onChange={updateForm("password")}
                             onKeyDown={handleKeyPress}
+                            isInvalid={invalidPassword}
                         />
-                        {invalidEmail && <p>Invalid email</p>}
-                        {invalidPassword && <p>Invalid password</p>}
-                        {noCredentials && <p dangerouslySetInnerHTML={{ __html: noCredentials.replace('login', '<a href="/login">login</a>') }} />}
-                        {isLoading && <p>Loading...</p>}
-                        <button onClick={login}>Login</button>
-                        <p>You do not have an account? <Link to="/register">Register</Link></p>
-                    </>
-                )}
-            </div>
-        </div>
+                    </FormControl>
+                    {noCredentials && <Text color="red.500" dangerouslySetInnerHTML={{ __html: noCredentials.replace('login', '<a href="/login">login</a>') }} />}
+                    {isLoading ? (
+                        <Button isLoading colorScheme="teal" size="lg" fontSize="md">
+                            Logging in...
+                        </Button>
+                    ) : (
+                        <Button onClick={login} colorScheme="teal" size="lg" fontSize="md">
+                            Log in
+                        </Button>
+                    )}
+                    <Text>You do not have an account? <ChakraLink as={Link} to="/register">Register</ChakraLink></Text>
+                </Box>
+            )}
+        </VStack>
     );
+    
 };
 
 export default Login;

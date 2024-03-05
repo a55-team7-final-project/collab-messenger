@@ -4,6 +4,7 @@ import { registerUser, validateEmail, validatePassword, emailExist } from "../..
 import { createUserHandle, getUserByHandle } from "../../services/user-services";
 import './Register.css';
 import { useNavigate } from "react-router-dom";
+import { Box, Button, FormControl, FormLabel, Input, Text, VStack, Link as ChakraLink } from "@chakra-ui/react";
 
 const Register = () => {
     const navigate = useNavigate();
@@ -85,32 +86,52 @@ const Register = () => {
     }
 
     return (
-        <div className="register-container">
-            <div className="register-header">
-                <h1>Register</h1>
-            </div>
-            <div className="register-form">
-                <label htmlFor="firstName">First Name</label>
-                <input value={form.firstName} onChange={updateForm('firstName')} type="text" name="firstName" id="firstName" placeholder="First Name" />
-                <label htmlFor="lastName">Last Name</label>
-                <input value={form.lastName} onChange={updateForm('lastName')} type="text" name="lastName" id="lastName" placeholder="Last Name" />
-                <label htmlFor="username">Username</label>
-                <input value={form.username} onChange={updateForm('username')} type="text" name="username" id="username" placeholder="Username" />
-                <label htmlFor="email">Email</label>
-                <input value={form.email} onChange={updateForm('email')} type="text" name="email" id="email" placeholder="email@example.com" />
-                <label htmlFor="password">Password</label>
-                <input value={form.password} onChange={updateForm('password')} type="password" name="password" id="password" placeholder="Password" />
-                <label htmlFor="phoneNumber">Phone Number</label>
-                <input value={form.phoneNumber} onChange={updateForm('phoneNumber')} type="text" name="phoneNumber" id="phoneNumber" placeholder="Phone Number (optional)" />
-                {emailExists && <p>Email is already being used. Go to Login page or try another email.</p>}
-                {errorMessage && <p>{errorMessage}</p>}
-                {userExists && <p>{userExists}</p>}
-                {noCredentials && <p>{noCredentials}</p>}
-                {isLoading && <p>Loading...</p>}
-                <button type="submit" disabled={isLoading} onClick={register}>Register</button>
-            </div>
-        </div>
+        <VStack spacing={4} width="full" maxW="md" margin="auto" mt={10}>
+            <Box textAlign="center">
+                <Text fontSize="2xl">Register</Text>
+            </Box>
+            <Box>
+                <FormControl id="firstName">
+                    <FormLabel>First Name</FormLabel>
+                    <Input value={form.firstName} onChange={updateForm('firstName')} placeholder="First Name" />
+                </FormControl>
+                <FormControl id="lastName">
+                    <FormLabel>Last Name</FormLabel>
+                    <Input value={form.lastName} onChange={updateForm('lastName')} placeholder="Last Name" />
+                </FormControl>
+                <FormControl id="username">
+                    <FormLabel>Username</FormLabel>
+                    <Input value={form.username} onChange={updateForm('username')} placeholder="Username" />
+                </FormControl>
+                <FormControl id="email">
+                    <FormLabel>Email</FormLabel>
+                    <Input value={form.email} onChange={updateForm('email')} placeholder="email@example.com" />
+                </FormControl>
+                <FormControl id="password">
+                    <FormLabel>Password</FormLabel>
+                    <Input value={form.password} onChange={updateForm('password')} type="password" placeholder="Password" />
+                </FormControl>
+                <FormControl id="phoneNumber">
+                    <FormLabel>Phone Number</FormLabel>
+                    <Input value={form.phoneNumber} onChange={updateForm('phoneNumber')} placeholder="Phone Number (optional)" />
+                </FormControl>
+                {emailExists && <Text color="red.500">Email is already being used. Go to Login page or try another email.</Text>}
+                {errorMessage && <Text color="red.500">{errorMessage}</Text>}
+                {userExists && <Text color="red.500">{userExists}</Text>}
+                {noCredentials && <Text color="red.500">{noCredentials}</Text>}
+                {isLoading ? (
+                    <Button isLoading colorScheme="teal" size="lg" fontSize="md">
+                        Registering...
+                    </Button>
+                ) : (
+                    <Button onClick={register} colorScheme="teal" size="lg" fontSize="md">
+                        Register
+                    </Button>
+                )}
+            </Box>
+        </VStack>
     );
+    
       
 }
 
