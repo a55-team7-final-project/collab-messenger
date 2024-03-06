@@ -82,7 +82,6 @@ const App: FC = () => {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/groups" element={<AllGroups />} />
-          <Route path="/groups/create" element={<CreateGroup />} />
           <Route path="/groups/:groupId" element={<GroupDetailed />} />
           <Route path="/groups/:groupId/channels/:channelId" element={<ChannelDetailed />} />
           <Route path="/profile" element={<UserPage userId={appContext.user?.uid || ''} />} />

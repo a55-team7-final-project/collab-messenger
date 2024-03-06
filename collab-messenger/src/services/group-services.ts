@@ -137,7 +137,7 @@ export const getGroupChannelById = async (groupId: string, channelId: string) =>
     }
 
     const channel = {
-        channelId,
+        id: channelId,
         ...snapshot.val(),
         createdOn: new Date(snapshot.val().createdOn),
         members: Object.keys(snapshot.val().members)

@@ -9,7 +9,6 @@ export default function SingleChannel ({channel}) {
 
     const onClick = () => {
         if (groupId) navigate(`/groups/${groupId}/channels/${channel.id}`);
-        // console.log('it will navigate to the correct chat');
     }
     return (
         <Box border="1px" borderColor="gray.200" borderRadius="md" p={4} onClick={onClick}>
