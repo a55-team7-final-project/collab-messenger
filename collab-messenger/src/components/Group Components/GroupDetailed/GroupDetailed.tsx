@@ -83,7 +83,6 @@ export default function GroupDetailed() {
                     <button onClick={removeMember}>Remove Member</button>
                 </>
             )}
-            <CreateChannel groupId={group.id} />
             <AllChannels groupId={groupId} />
             {error && <p style={{color: 'red'}}>{error}</p>}
             {message && <p style={{color: 'green'}}>{message}</p>}
