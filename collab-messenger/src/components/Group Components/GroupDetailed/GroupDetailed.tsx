@@ -71,7 +71,7 @@ export default function GroupDetailed() {
     }
 
 
-    return group && (
+    return group && userData && (
         <div>
             
             <h2>{group.name}</h2>
