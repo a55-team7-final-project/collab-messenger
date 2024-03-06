@@ -3,7 +3,7 @@ import { FC, useState, useEffect } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from './config/firebase-setup';
-import { getUserData } from './services/user-services';
+import { getUserData, getUserByHandle } from './services/user-services';
 import Register from './Views/Register/Register';
 import Home from './Views/Home/Home';
 import Header from './components/Header/Header';
@@ -50,6 +50,23 @@ const App: FC = () => {
       setShowLoading(false);
     }
   }, [user]);
+
+  useEffect(() => {
+    if (user && user.displayName) { 
+      getUserByHandle(user.displayName) 
+        .then((userData) => {
+          if (userData) {
+            setContext({
+              user,
+              userData,
+            });
+          }
+          setShowLoading(false);
+        });
+    } else {
+      setShowLoading(false);
+    }
+  }, [user, user?.displayName]);
 
 
   if ((loading && !appContext.userData && !appContext.user) || showLoading) {

@@ -90,6 +90,13 @@ export const joinGroupById = async (groupId: string, userHandle: string) => {
     await set(userRef, true);
 };
 
+export const isMember = async (groupId: string, userHandle: string) => {
+    const userRef = ref(db, `groups/${groupId}/members/${userHandle}`);
+    const snapshot = await get(userRef);
+    return snapshot.exists();
+};
+
+
 export const leaveGroupById = async (groupId: string, userHandle: string) => {
     const userRef = ref(db, `groups/${groupId}/members/${userHandle}`);
     await remove(userRef);

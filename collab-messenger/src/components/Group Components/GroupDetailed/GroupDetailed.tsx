@@ -1,92 +1,118 @@
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getGroupById, joinGroupById, leaveGroupById } from "../../../services/group-services";
+import { getGroupById, joinGroupById, leaveGroupById, isMember } from "../../../services/group-services";
 import { AppContext } from "../../../context/AppContext";
 import CreateChannel from "../../Channel Components/CreateChannel/CreateChannel";
 import AllChannels from "../../Channel Components/AllChannels/AllChannels";
 import { Group } from "../../../types/types";
-import { getUserData } from "../../../services/user-services";
+import { getUserByHandle } from "../../../services/user-services";
 
 export default function GroupDetailed() {
-    const [group, setGroup] = useState<Group | null>(null);     
-    const { userData } = useContext(AppContext);
+    const [group, setGroup] = useState<Group | null>(null);
+    const { userData, userLoading } = useContext(AppContext);
     const { groupId } = useParams();
-    const [newMemberId, setNewMemberId] = useState('');
+    const [newMemberUsername, setNewMemberUsername] = useState('');
     const [message, setMessage] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(true);
 
     const addMember = async () => {
-        if (userData!.uid !== group?.owner) {
+        
+        if (userData!.handle !== group?.owner) {
             setError('Only the group owner can add users.');
             return;
         }
-        const user = await getUserData(newMemberId);
+        const user = await getUserByHandle(newMemberUsername);
         if (!user) {
             setError('Non-existent user, please try with a different User-ID.');
             return;
         }
 
-        if (group && Object.prototype.hasOwnProperty.call(group.members, newMemberId)) {
+        const isUserMember = await isMember(group.id, user.handle);
+        if (isUserMember) {
             setError('User is already a member of the group.');
             return;
         }
-    
-        await joinGroupById(group.id, newMemberId);
+
+        await joinGroupById(group.id, user.handle);
         setMessage('User added successfully.');
         setError('');
-        getGroupById(group.id).then(setGroup);
-        setNewMemberId('');
+        const updatedGroup = await getGroupById(group.id);
+        setGroup(updatedGroup);
+        setNewMemberUsername('');
     };
 
     const removeMember = async () => {
-        if (userData!.uid !== group?.owner) {
+        if (userData!.handle !== group?.owner) {
             setError('Only the group owner can remove users.');
             return;
         }
-    
-        if (group && !Object.prototype.hasOwnProperty.call(group.members, newMemberId)) {
+        const user = await getUserByHandle(newMemberUsername);
+        if (!user || (group && !Object.prototype.hasOwnProperty.call(group.members, user.handle))) {
             setError('User is not a member of the group.');
             return;
         }
-    
-        await leaveGroupById(group.id, newMemberId);
+
+        const isUserMember = await isMember(group.id, user.handle);
+        if (!isUserMember) {
+            setError('User is not a member of the group.');
+            return;
+        }
+
+        await leaveGroupById(group.id, user.handle);
         setMessage('User removed successfully.');
         setError('');
-        getGroupById(group.id).then(setGroup);
-        setNewMemberId('');
+        const updatedGroup = await getGroupById(group.id);
+        setGroup(updatedGroup);
+        setNewMemberUsername('');
     };
 
     useEffect(() => {
         if (groupId) {
             getGroupById(groupId).then(group => {
                 setGroup(group);
-                setLoading(false); 
+                setLoading(false);
             });
         }
     }, [groupId]);
 
-    if (loading) {
-        return <div>Loading...</div>; 
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setMessage('');
+            setError('');
+        }, 5000); 
+    
+        return () => clearTimeout(timer); 
+    }, [message, error]);
+
+    if (loading || userLoading) {
+        return <div>Loading...</div>;
     }
 
 
-    return group && (
+    return group && userData && (
         <div>
-            
             <h2>{group.name}</h2>
             <p>Owner: {group.owner}</p>
-            {userData!.uid === group.owner && (
-                <>
-                    <input type="text" placeholder="Enter member's user ID" onChange={e => setNewMemberId(e.target.value)} />
-                    <button onClick={addMember}>Add Member</button>
-                    <button onClick={removeMember}>Remove Member</button>
-                </>
-            )}
+            <div>
+                <input
+                    type="text"
+                    placeholder="Enter member's username"
+                    value={newMemberUsername}
+                    onChange={(e) => setNewMemberUsername(e.target.value)}
+                />
+                <button onClick={addMember}>Add Member</button>
+                <button onClick={removeMember}>Remove Member</button>
+                {error && <p style={{ color: 'red' }}>{error}</p>}
+                {message && <p style={{ color: 'green' }}>{message}</p>}
+            </div>
+
+            <div>
+                <h3>Members:</h3>
+                
+            </div>
             <CreateChannel groupId={group.id} />
-            <AllChannels groupId={groupId} />
-            {error && <p style={{color: 'red'}}>{error}</p>}
-            {message && <p style={{color: 'green'}}>{message}</p>}
+            <AllChannels groupId={group.id} />
         </div>
     )
 }
