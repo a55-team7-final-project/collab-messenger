@@ -24,7 +24,7 @@ export default function GroupDetailed() {
         }
         const user = await getUserByHandle(newMemberUsername);
         if (!user) {
-            setError('Non-existent user, please try with a different User-ID.');
+            setError('Non-existent user');
             return;
         }
 
@@ -48,7 +48,7 @@ export default function GroupDetailed() {
             return;
         }
         const user = await getUserByHandle(newMemberUsername);
-        if (!user || (group && !Object.prototype.hasOwnProperty.call(group.members, user.handle))) {
+        if (!user) {
             setError('User is not a member of the group.');
             return;
         }
@@ -107,12 +107,11 @@ export default function GroupDetailed() {
                 {message && <p style={{ color: 'green' }}>{message}</p>}
             </div>
 
-            <div>
+            {/* <div>
                 <h3>Members:</h3>
                 
-            </div>
-            <CreateChannel groupId={group.id} />
-            <AllChannels groupId={group.id} />
+            </div> */}
+            <AllChannels />
         </div>
     )
 }
