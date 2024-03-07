@@ -4,6 +4,7 @@ import { AppContext } from "../../context/AppContext";
 import { getUserData } from "../../services/user-services";
 import { Link } from "react-router-dom";
 import { Box, Button, FormControl, FormLabel, Input, Text, VStack, Link as ChakraLink } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 
 const Login: React.FC = () => {
     const { userData, setContext } = useContext(AppContext);
@@ -17,6 +18,7 @@ const Login: React.FC = () => {
     const [invalidEmail, setInvalidEmail] = useState<boolean>(false);
     const [invalidPassword, setInvalidPassword] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState(false);
+    const navigate = useNavigate();
 
     const updateForm = (prop: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
         setForm({
@@ -57,6 +59,7 @@ const Login: React.FC = () => {
                         channels: [], 
                         meetings: [],
                     });
+                    navigate("/");
                 }
             } else {
                 setInvalidEmail(true);
