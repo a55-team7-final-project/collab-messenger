@@ -44,8 +44,8 @@ export default function ChannelDetailed() {
         <>
             {/* <CreateChannel groupId={groupId} /> */}
             {channel && channel.messages ? Object.keys(channel.messages).map((userHandle, index) => {
-                return <SingleChannelText key={index} text={channel.messages[userHandle]} userHandle={userHandle} />
-            }) : <p>No messages</p>}
+                return <SingleChannelText key={index} message={channel.messages[userHandle]} />
+            }) : <p>No messages. Be the first to write something!</p>}
             <br />
             <CreateMessage />
         </>

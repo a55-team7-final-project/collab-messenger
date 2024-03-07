@@ -1,9 +1,9 @@
 
-export default function SingleChannelText ({text, userHandle}) {
+export default function SingleChannelText ({message}) {
     return (
         <>
-        <p>{userHandle}:</p>
-        <span>{text}</span>
+        <p>{message.userHandle}:</p>
+        <span>{message.text}</span>
         </>
     )
 }

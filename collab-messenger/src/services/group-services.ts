@@ -1,13 +1,14 @@
 import { get, ref, query, orderByChild, push, set, remove } from "firebase/database";
 import { db } from "../config/firebase-setup";
 
+
 //addGroupChannel function defined before addGroup!
 export const addGroupChannel = async (groupId: string, owner: string, name: string, publicity: boolean) => {
  
     const channel = {
         name,
         createdOn: Date.now(),
-        messages: {"bot": `Welcome to ${name}! Be the first to write a message!`},
+        messages: {},
         members: {},
         publicity
     }
@@ -164,6 +165,12 @@ export const deleteGroupChannelById = async (groupId: string, channelId: string)
 // group channel message functions
 
 export const addGroupChannelMessage = async (groupId: string, channelId: string, userHandle: string, text: string) => {
-    const textRef = ref(db, `groups/${groupId}/channels/${channelId}/messages/${userHandle}`);
-    await set(textRef, text);
+    const newMessageRef = ref(db, `groups/${groupId}/channels/${channelId}/messages`);
+    const message =  {
+        userHandle,
+        text,
+        createdOn: Date.now(),
+    };
+
+    await push(newMessageRef, message);
 };
