@@ -15,6 +15,7 @@ export default function GroupDetailed() {
     const [message, setMessage] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(true);
+    const [members, setMembers] = useState<string[]>([]);
 
     const addMember = async () => {
         
@@ -37,6 +38,7 @@ export default function GroupDetailed() {
         await joinGroupById(group.id, user.handle);
         setMessage('User added successfully.');
         setError('');
+        updateMembers(); 
         const updatedGroup = await getGroupById(group.id);
         setGroup(updatedGroup);
         setNewMemberUsername('');
@@ -62,8 +64,16 @@ export default function GroupDetailed() {
         await leaveGroupById(group.id, user.handle);
         setMessage('User removed successfully.');
         setError('');
+        updateMembers(); 
         const updatedGroup = await getGroupById(group.id);
         setGroup(updatedGroup);
+        setNewMemberUsername('');
+    };
+
+    const updateMembers = async () => {
+        const updatedGroup = await getGroupById(group.id);
+        setGroup(updatedGroup);
+        setMembers(updatedGroup.members); // Update the members list
         setNewMemberUsername('');
     };
 
@@ -71,6 +81,7 @@ export default function GroupDetailed() {
         if (groupId) {
             getGroupById(groupId).then(group => {
                 setGroup(group);
+                setMembers(group.members);
                 setLoading(false);
             });
         }
@@ -107,10 +118,11 @@ export default function GroupDetailed() {
                 {message && <p style={{ color: 'green' }}>{message}</p>}
             </div>
 
-            {/* <div>
-                <h3>Members:</h3>
+            <div>
+            <h3>Members:</h3>
+                {members.map(member => <p key={member}>{member}</p>)}
                 
-            </div> */}
+            </div>
             <AllChannels />
         </div>
     )
