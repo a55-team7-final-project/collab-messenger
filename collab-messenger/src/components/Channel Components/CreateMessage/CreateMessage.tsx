@@ -1,8 +1,8 @@
-import { useContext, useState } from "react"
-import { AppContext } from "../../../context/AppContext"
+import { useContext, useState } from "react";
+import { AppContext } from "../../../context/AppContext";
 import { addGroupChannelMessage } from "../../../services/group-services";
 import { useParams } from "react-router-dom";
-
+import { Box, Button, Flex, Input } from "@chakra-ui/react";
 
 const CreateMessage = () => {
     const { userData } = useContext(AppContext);
@@ -24,11 +24,12 @@ const CreateMessage = () => {
 
     return (
         userData && channelId && groupId && (
-            <>
-                <label htmlFor="message-text"></label>
-                <input value={message} onChange={handleInputChange} type="text" name="message-text" id="message-name" placeholder="Enter your message here" />
-                <button id="create-message-button" onClick={createMessageClick}>Send</button>
-            </>
+            <Flex as="footer" p={2} position="sticky" bottom={0} width="100%" borderTop="1px" borderColor="black" backgroundColor="white" zIndex="sticky">
+                <Box flex="1" mr={2}>
+                    <Input value={message} onChange={handleInputChange} placeholder="Enter your message here" />
+                </Box>
+                <Button onClick={createMessageClick}>Send</Button>
+            </Flex>
         )
     );
 };
