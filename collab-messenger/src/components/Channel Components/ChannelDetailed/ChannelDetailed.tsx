@@ -1,14 +1,13 @@
-import { useContext, useEffect, useState } from "react"
-import { getAllGroupChannels, getGroupChannelById } from "../../../services/group-services";
+import { useContext, useEffect, useState } from "react";
+import { getGroupChannelById } from "../../../services/group-services";
 import { AppContext } from "../../../context/AppContext";
-import SingleChannel from "../SingleChannel/SingleChannel";
-import CreateChannel from "../CreateChannel/CreateChannel";
 import SingleChannelText from "../SIngleChannelText/SingleChannelText";
 import { useParams } from "react-router-dom";
 import CreateMessage from "../CreateMessage/CreateMessage";
 import { onValue, ref } from "firebase/database";
 import { db } from "../../../config/firebase-setup";
-
+import { Box, Flex } from "@chakra-ui/react";
+import MemberList from "../MemberList/MemberList";
 
 export default function ChannelDetailed() {
 
@@ -41,13 +40,21 @@ export default function ChannelDetailed() {
     }, [groupId, channelId, userData]);
 
     return channel && userData && (
-        <>
-            {/* <CreateChannel groupId={groupId} /> */}
-            {channel && channel.messages ? Object.keys(channel.messages).map((userHandle, index) => {
-                return <SingleChannelText key={index} message={channel.messages[userHandle]} />
-            }) : <p>No messages. Be the first to write something!</p>}
-            <br />
-            <CreateMessage />
-        </>
+        <Flex direction="column" justify="space-between" minHeight="100vh">
+            <Flex>
+                
+            <Box flex="1" overflowY="auto" pb={4}>
+                {channel && channel.messages ? Object.keys(channel.messages).map((userHandle, index) => {
+                    return <SingleChannelText key={index} message={channel.messages[userHandle]} />
+                }) : <p>No messages. Be the first to write something!</p>}
+            </Box>
+            <Box width="300px" >
+                <MemberList members={channel.members} />
+            </Box>
+            </Flex>
+            <Box position="sticky" bottom={0} width="100%" borderTop="1px" borderColor="gray.200" backgroundColor="white" zIndex="sticky">
+                <CreateMessage />
+            </Box>
+        </Flex>
     )
 }

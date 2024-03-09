@@ -2,10 +2,11 @@ import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getGroupById, joinGroupById, leaveGroupById, isMember } from "../../../services/group-services";
 import { AppContext } from "../../../context/AppContext";
-import CreateChannel from "../../Channel Components/CreateChannel/CreateChannel";
 import AllChannels from "../../Channel Components/AllChannels/AllChannels";
 import { Group } from "../../../types/types";
 import { getUserByHandle } from "../../../services/user-services";
+import MemberList from "../../Channel Components/MemberList/MemberList";
+import { Box, Flex } from "@chakra-ui/react";
 
 export default function GroupDetailed() {
     const [group, setGroup] = useState<Group | null>(null);
@@ -100,30 +101,28 @@ export default function GroupDetailed() {
         return <div>Loading...</div>;
     }
 
-
     return group && userData && (
-        <div>
-            <h2>{group.name}</h2>
-            <p>Owner: {group.owner}</p>
-            <div>
-                <input
-                    type="text"
-                    placeholder="Enter member's username"
-                    value={newMemberUsername}
-                    onChange={(e) => setNewMemberUsername(e.target.value)}
-                />
-                <button onClick={addMember}>Add Member</button>
-                <button onClick={removeMember}>Remove Member</button>
-                {error && <p style={{ color: 'red' }}>{error}</p>}
-                {message && <p style={{ color: 'green' }}>{message}</p>}
-            </div>
-
-            <div>
-            <h3>Members:</h3>
-                {members.map(member => <p key={member}>{member}</p>)}
-                
-            </div>
-            <AllChannels />
-        </div>
+        <Flex>
+            <Box flex="1">
+                <h2>{group.name}</h2>
+                <p>Owner: {group.owner}</p>
+                <div>
+                    <input
+                        type="text"
+                        placeholder="Enter member's username"
+                        value={newMemberUsername}
+                        onChange={(e) => setNewMemberUsername(e.target.value)}
+                    />
+                    <button onClick={addMember}>Add Member</button>
+                    <button onClick={removeMember}>Remove Member</button>
+                    {error && <p style={{ color: 'red' }}>{error}</p>}
+                    {message && <p style={{ color: 'green' }}>{message}</p>}
+                </div>
+                <AllChannels />
+            </Box>
+            <Box width="300px">
+                <MemberList members={members} />
+            </Box>
+        </Flex>
     )
 }
