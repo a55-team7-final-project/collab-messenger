@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { getGroupById, joinGroupById, leaveGroupById, isMember } from "../../../services/group-services";
+import { useNavigate, useParams } from "react-router-dom";
+import { getGroupById, joinGroupById, leaveGroupById, isMember, deleteGroupById } from "../../../services/group-services";
 import { AppContext } from "../../../context/AppContext";
 import AllChannels from "../../Channel Components/AllChannels/AllChannels";
 import { Group } from "../../../types/types";
@@ -17,7 +17,28 @@ export default function GroupDetailed() {
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(true);
     const [members, setMembers] = useState<string[]>([]);
+    const navigate = useNavigate();
 
+    
+    useEffect(() => {
+        if (groupId) {
+            getGroupById(groupId).then(group => {
+                setGroup(group);
+                setMembers(group.members);
+                setLoading(false);
+            });
+        }
+    }, [groupId]);
+    
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setMessage('');
+            setError('');
+        }, 5000); 
+    
+        return () => clearTimeout(timer); 
+    }, [message, error]);
+    
     const addMember = async () => {
         
         if (userData!.handle !== group?.owner) {
@@ -78,24 +99,11 @@ export default function GroupDetailed() {
         setNewMemberUsername('');
     };
 
-    useEffect(() => {
-        if (groupId) {
-            getGroupById(groupId).then(group => {
-                setGroup(group);
-                setMembers(group.members);
-                setLoading(false);
-            });
-        }
-    }, [groupId]);
+    const deleteGroup = async () => {
+        deleteGroupById(groupId);
+        navigate(-1);
+    }
 
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setMessage('');
-            setError('');
-        }, 5000); 
-    
-        return () => clearTimeout(timer); 
-    }, [message, error]);
 
     if (loading || userLoading) {
         return <div>Loading...</div>;
@@ -106,6 +114,7 @@ export default function GroupDetailed() {
             <Box flex="1">
                 <h2>{group.name}</h2>
                 <p>Owner: {group.owner}</p>
+                {group.owner === userData.handle && <button onClick={deleteGroup} >Delete Group</button>}
                 <div>
                     <input
                         type="text"
