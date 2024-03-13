@@ -100,17 +100,23 @@ export default function GroupDetailed() {
     };
 
     const deleteGroup = async () => {
-        deleteGroupById(groupId);
+        deleteGroupById(group.id);
         navigate(-1);
     }
 
     const leaveGroup = async () => {
-        leaveGroupById(groupId, userData.handle);
+        leaveGroupById(group.id, userData.handle);
         navigate(-1);
     }
 
     if (loading || userLoading) {
         return <div>Loading...</div>;
+    }
+
+    if (group && userData) {
+        if (!members.includes(userData.handle)) {
+        return <div>You are not a member of this group.</div>
+        }
     }
 
     return group && userData && (
