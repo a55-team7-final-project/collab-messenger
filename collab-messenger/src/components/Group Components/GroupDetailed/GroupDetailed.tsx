@@ -19,7 +19,7 @@ export default function GroupDetailed() {
     const [members, setMembers] = useState<string[]>([]);
     const navigate = useNavigate();
 
-    
+
     useEffect(() => {
         if (groupId) {
             getGroupById(groupId).then(group => {
@@ -104,6 +104,10 @@ export default function GroupDetailed() {
         navigate(-1);
     }
 
+    const leaveGroup = async () => {
+        leaveGroupById(groupId, userData.handle);
+        navigate(-1);
+    }
 
     if (loading || userLoading) {
         return <div>Loading...</div>;
@@ -115,6 +119,7 @@ export default function GroupDetailed() {
                 <h2>{group.name}</h2>
                 <p>Owner: {group.owner}</p>
                 {group.owner === userData.handle && <button onClick={deleteGroup} >Delete Group</button>}
+                {group.owner !== userData.handle && <button onClick={leaveGroup} >Leave Group</button>}
                 <div>
                     <input
                         type="text"
