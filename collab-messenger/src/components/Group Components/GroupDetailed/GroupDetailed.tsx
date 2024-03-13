@@ -138,7 +138,7 @@ export default function GroupDetailed() {
                     {error && <p style={{ color: 'red' }}>{error}</p>}
                     {message && <p style={{ color: 'green' }}>{message}</p>}
                 </div>
-                <AllChannels />
+                <AllChannels groupOwner={group.owner} />
             </Box>
             <Box width="300px">
                 <MemberList members={members} />
