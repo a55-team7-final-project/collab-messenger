@@ -8,7 +8,7 @@ import { onValue, ref } from "firebase/database";
 import { db } from "../../../config/firebase-setup";
 
 
-export default function AllChannels() {
+export default function AllChannels({groupOwner}) {
 
     const { userData } = useContext(AppContext);
     const [allChannels, setAllChannels] = useState(null);
@@ -39,7 +39,7 @@ return allChannels && userData && (
     <>
         <CreateChannel />
         {allChannels && allChannels.map((channel, index) => {
-            return <SingleChannel key={index} channel={channel} />
+            return <SingleChannel key={index} channel={channel} groupOwner={groupOwner}/>
         })}
     </>
 )

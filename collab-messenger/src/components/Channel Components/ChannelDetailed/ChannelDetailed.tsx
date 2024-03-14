@@ -48,9 +48,9 @@ export default function ChannelDetailed() {
                     return <SingleChannelText key={index} message={channel.messages[userHandle]} />
                 }) : <p>No messages. Be the first to write something!</p>}
             </Box>
-            <Box width="300px" >
+            {!channel.publicity && <Box width="300px" >
                 <MemberList members={channel.members} />
-            </Box>
+            </Box>}
             </Flex>
             <Box position="sticky" bottom={0} width="100%" borderTop="1px" borderColor="gray.200" backgroundColor="white" zIndex="sticky">
                 <CreateMessage />
