@@ -24,7 +24,7 @@ export default function SingleChannel({ channel, groupOwner }) {
         <Box border="1px" borderColor="gray.200" borderRadius="md" p={4} onClick={onClickChannel}>
             <Flex justifyContent="space-between">
                 <Text fontWeight="bold">{channel.name}</Text>
-                {userData.handle === groupOwner && <Button onClick={deleteChannel}>Delete Channel</Button>}
+                {userData.handle === groupOwner && channel.name !== 'General' && <Button onClick={deleteChannel}>Delete Channel</Button>}
             </Flex>
             <Flex justifyContent="space-between" mt={2}>
                 <Text>{channel.publicity ? 'public' : 'private'}</Text>
