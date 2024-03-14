@@ -1,4 +1,4 @@
-import { get, set, ref, query, update, orderByChild, equalTo } from "firebase/database";
+import { get, set, ref, push, query, update, orderByChild, equalTo } from "firebase/database";
 import { db, storage } from "../config/firebase-setup.js";
 import { User } from "../types/types.js";
 import { uploadBytes, getDownloadURL, ref as sRef } from "firebase/storage";
@@ -29,7 +29,7 @@ export const createUserHandle = (handle: string, uid: string, email: string, fir
 
 export const getUserData = async (uid: string): Promise<User | null> => {
     const snapshot = await get(query(ref(db, `users`), orderByChild('uid'), equalTo(uid)));
-    
+
     if (!snapshot.exists()) {
         return null;
     }
@@ -43,6 +43,36 @@ export const getUserData = async (uid: string): Promise<User | null> => {
 
     return user;
 }
+
+export const getAllUsers = async (): Promise<User[]> => {
+    try {
+        const snapshot = await get(ref(db, "users"));
+        if (!snapshot.exists()) {
+            return [];
+        }
+        const users: User[] = Object.keys(snapshot.val()).map((key) => ({
+            id: key,
+            ...snapshot.val()[key],
+        }));
+        return users;
+    }
+    catch (error) {
+        console.error("Error fetching users:", error);
+        throw error;
+    }
+};
+
+export const addIndividualMessage = async (userId: string, userHandle: string, text: string) => {
+    const newMessageRef = ref(db, `users/${userId}/messages`);
+    const message =  {
+        userHandle,
+        text,
+        createdOn: Date.now(),
+    };
+
+    await push(newMessageRef, message);
+};
+
 
 export const updateUserDetails = async (username: string, userInfo: { [key: string]: unknown }): Promise<void> => {
     const userRef = ref(db, `users/${username}`);

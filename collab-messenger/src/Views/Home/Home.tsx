@@ -17,6 +17,7 @@ import { Link } from 'react-router-dom';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../../config/firebase-setup';
 import AllGroups from '../../components/Group Components/AllGroups/AllGroups';
+import UserSearch from '../../components/User Page/UsersSearch';
 
 const Home: React.FC = () => {
   const [user] = useAuthState(auth);
@@ -27,8 +28,10 @@ const Home: React.FC = () => {
       {user ? (
         <>
         <p>You are logged in. Go to your <Link to="/profile">Profile</Link></p>
+        <UserSearch />
         <AllGroups/>
         </>
+        
       ) : (
         <p>You are not logged in. <Link to="/login">Login</Link> or <Link to="/register">Register</Link></p>
       )}

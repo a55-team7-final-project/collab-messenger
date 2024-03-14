@@ -32,3 +32,16 @@ export type Channel = {
     participants: User[];
     isPrivate: boolean;
 }
+
+export type IndividualChat = {
+    id: string;
+    userHandle: string;
+    text: string;
+    createdOn: Date;
+}
+
+export type UserChatDetailed = {
+    id: string;
+    chats: IndividualChat[];
+    members: User[];
+};
