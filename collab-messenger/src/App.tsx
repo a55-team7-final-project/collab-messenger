@@ -86,7 +86,7 @@ const App: FC = () => {
           <Route path="/groups" element={<AllGroups />} />
           <Route path="/groups/create" element={<CreateGroup />} />
           <Route path="/groups/:groupId" element={<GroupDetailed />} />
-          <Route path="/users/:userId/chats" element={<UserChatDetailed />} />
+          <Route path="/users/:userId/chats/:chatId" element={<UserChatDetailed />} />
           <Route path="/users" element={<Users />} />
           <Route path="/groups/:groupId/channels/:channelId" element={<ChannelDetailed />} />
           <Route path="/profile" element={<UserPage userId={appContext.user?.uid || ''} />} />

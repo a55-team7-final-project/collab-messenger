@@ -13,30 +13,30 @@ import MemberList from "../../Channel Components/MemberList/MemberList";
 const UserChatDetailed: React.FC = () => {
     const { userData } = useContext(AppContext);
     const [user, setUser] = useState<UserChatDetailed | null>(null);
-    const { userId } = useParams<{ userId: string }>(); 
+    const { userId, chatId } = useParams<{ userId: string, chatId: string }>();
 
     useEffect(() => {
         if (userData && userId) {
             getUserData(userId).then(setUser); 
         }
-        if (userData && userId) {
-            const userRef = ref(db, `users/${userId}`);
-            const unsubscribe = onValue(userRef, (snapshot) => {
+        if (userData && chatId) {
+            const chatRef = ref(db, `chats/${chatId}`);
+            const unsubscribe = onValue(chatRef, (snapshot) => {
                 if (snapshot.exists()) {
-                    const user = {
-                        id: userId,
+                    const chat = {
+                        id: chatId,
                         ...snapshot.val(),
                         createdOn: new Date(snapshot.val().createdOn),
                         messages: snapshot.val().messages ? Object.keys(snapshot.val().messages) : []
                     };
-                    setUser(user);
+                    setUser(chat);
                 } else {
                     setUser(null);
                 }
             });
             return () => unsubscribe();
         }
-    }, [userId, userData]);
+    }, [userId, chatId, userData]);
 
     return user && userData && (
         <Flex direction="column" justify="space-between" minHeight="100vh">
