@@ -1,41 +1,43 @@
-// import { FC, useContext } from 'react';
-// import { AppContext } from '../../content/AppContext';
-
-// const Home: FC = () => {
-//     const { userData } = useContext(AppContext);
-
-//     return (
-//         <div>
-//             <h1>Hello, {userData?.firstName} {userData?.lastName}</h1>
-//         </div>
-//     );
-// }
-
-// export default Home;
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../../config/firebase-setup';
 import AllGroups from '../../components/Group Components/AllGroups/AllGroups';
 import UserSearch from '../../components/User Page/UsersSearch';
+import { AppContext } from '../../context/AppContext';
+import { Box, Heading, Text, Button, VStack, useColorModeValue, Center, Container } from '@chakra-ui/react';
+
 
 const Home: React.FC = () => {
   const [user] = useAuthState(auth);
+  const { userData } = React.useContext(AppContext);
+  const color = useColorModeValue('teal.500', 'teal.200');  
 
   return (
-    <div>
-      <h1>Welcome to Collab Messenger</h1>
+    <Container maxW="container.xl" p="4">
+      <Center>
+        <Heading as="h1" size="2xl" color={color}>
+          Hello, {userData?.firstName} {userData?.lastName}
+        </Heading>
+      </Center>
       {user ? (
-        <>
-        <p>You are logged in. Go to your <Link to="/profile">Profile</Link></p>
-        <UserSearch />
-        <AllGroups/>
-        </>
-        
+        <VStack spacing={8} align="stretch">
+          <Text fontSize="xl">You are logged in. Go to your <Link to="/profile">Profile</Link></Text>
+          <Box p="4" borderWidth={1} borderRadius="lg">
+            <UserSearch />
+          </Box>
+          <Box p="4" borderWidth={1} borderRadius="lg">
+            <AllGroups/>
+          </Box>
+        </VStack>
       ) : (
-        <p>You are not logged in. <Link to="/login">Login</Link> or <Link to="/register">Register</Link></p>
+        <VStack spacing={4} align="center">
+          <Text fontSize="xl">You are not logged in.</Text>
+          <Button as={Link} to="/login" colorScheme="teal" variant="outline">Login</Button>
+          <Button as={Link} to="/register" colorScheme="teal">Register</Button>
+        </VStack>
       )}
-    </div>
+    </Container>
   );
 };
 
