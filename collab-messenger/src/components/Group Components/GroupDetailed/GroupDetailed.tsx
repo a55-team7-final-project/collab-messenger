@@ -73,13 +73,18 @@ export default function GroupDetailed() {
         }
         const user = await getUserByHandle(newMemberUsername);
         if (!user) {
-            setError('User is not a member of the group.');
+            setError('Non-existent user');
             return;
         }
 
         const isUserMember = await isMember(group.id, user.handle);
         if (!isUserMember) {
             setError('User is not a member of the group.');
+            return;
+        }
+
+        if (newMemberUsername === group.owner) {
+            setError('Owner cannot be removed from the group');
             return;
         }
 
@@ -126,6 +131,10 @@ export default function GroupDetailed() {
                 <p>Owner: {group.owner}</p>
                 {group.owner === userData.handle && <button onClick={deleteGroup} >Delete Group</button>}
                 {group.owner !== userData.handle && <button onClick={leaveGroup} >Leave Group</button>}
+                <br />
+                <AllChannels groupOwner={group.owner} />
+            </Box>
+            <Box width="300px">
                 <div>
                     <input
                         type="text"
@@ -133,14 +142,12 @@ export default function GroupDetailed() {
                         value={newMemberUsername}
                         onChange={(e) => setNewMemberUsername(e.target.value)}
                     />
+                    <br />
                     <button onClick={addMember}>Add Member</button>
                     <button onClick={removeMember}>Remove Member</button>
                     {error && <p style={{ color: 'red' }}>{error}</p>}
                     {message && <p style={{ color: 'green' }}>{message}</p>}
                 </div>
-                <AllChannels groupOwner={group.owner} />
-            </Box>
-            <Box width="300px">
                 <MemberList members={members} />
             </Box>
         </Flex>
