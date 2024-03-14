@@ -92,6 +92,7 @@ export const joinGroupById = async (groupId: string, userHandle: string) => {
 };
 
 export const isMember = async (groupId: string, userHandle: string) => {
+    if (!userHandle) return false;
     const userRef = ref(db, `groups/${groupId}/members/${userHandle}`);
     const snapshot = await get(userRef);
     return snapshot.exists();
@@ -147,12 +148,12 @@ export const getGroupChannelById = async (groupId: string, channelId: string) =>
     return channel;
 };
 
-export const joinGroupChannel = async (groupId: string, userHandle: string, channelId: string) => {
+export const joinGroupChannelById = async (groupId: string, channelId: string, userHandle: string) => {
     const userRef = ref(db, `groups/${groupId}/channels/${channelId}/members/${userHandle}`);
     await set(userRef, true);
 };
 
-export const leaveGroupChannel = async (groupId: string, userHandle: string, channelId: string) => {
+export const leaveGroupChannelById = async (groupId: string, channelId: string, userHandle: string) => {
     const userRef = ref(db, `groups/${groupId}/channels/${channelId}/members/${userHandle}`);
     await remove(userRef);
 };
@@ -160,6 +161,13 @@ export const leaveGroupChannel = async (groupId: string, userHandle: string, cha
 export const deleteGroupChannelById = async (groupId: string, channelId: string) => {
     const channelRef = ref(db, `groups/${groupId}/channels/${channelId}`);
     await remove(channelRef);
+};
+
+export const isChannelMember = async (groupId: string, channelId: string, userHandle: string) => {
+    if (!userHandle) return false;
+    const userRef = ref(db, `groups/${groupId}/channels/${channelId}/members/${userHandle}`);
+    const snapshot = await get(userRef);
+    return snapshot.exists();
 };
 
 // group channel message functions

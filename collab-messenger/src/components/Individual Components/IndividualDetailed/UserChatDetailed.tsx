@@ -12,13 +12,10 @@ import MemberList from "../../Channel Components/MemberList/MemberList";
 
 const UserChatDetailed: React.FC = () => {
     const { userData } = useContext(AppContext);
-    const [user, setUser] = useState<UserChatDetailed | null>(null);
+    const [chat, setChat] = useState<UserChatDetailed | null>(null);
     const { userId, chatId } = useParams<{ userId: string, chatId: string }>();
 
     useEffect(() => {
-        if (userData && userId) {
-            getUserData(userId).then(setUser); 
-        }
         if (userData && chatId) {
             const chatRef = ref(db, `chats/${chatId}`);
             const unsubscribe = onValue(chatRef, (snapshot) => {
@@ -29,26 +26,26 @@ const UserChatDetailed: React.FC = () => {
                         createdOn: new Date(snapshot.val().createdOn),
                         messages: snapshot.val().messages ? Object.keys(snapshot.val().messages) : []
                     };
-                    setUser(chat);
+                    setChat(chat);
                 } else {
-                    setUser(null);
+                    setChat(null);
                 }
             });
             return () => unsubscribe();
         }
-    }, [userId, chatId, userData]);
+    }, [chatId, userData]);
 
-    return user && userData && (
+    return userData && chatId && (
         <Flex direction="column" justify="space-between" minHeight="100vh">
             <Flex>
                 <Box flex="1" overflowY="auto" pb={4}>
-                    {user && user.messages ? Object.keys(user.messages).map((userHandle, index) => {
-                        return <SingleChat key={index} message={user.messages[userHandle]} user={user} />
+                    {chat ? Object.keys(chat.messages).map((userHandle, index) => {
+                        return <SingleChat key={index} message={chat.messages[userHandle]} user={user} />
                     }) : <p>No messages. Be the first to write something!</p>}
                 </Box>
-                <Box width="300px">
-                    <MemberList members={user.members} /> 
-                </Box>
+                {chat && <Box width="300px">
+                    <MemberList members={chat.members} /> 
+                </Box>}
             </Flex>
             <Box position="sticky" bottom={0} width="100%" borderTop="1px" borderColor="gray.200" backgroundColor="white" zIndex="sticky">
                 <CreateIndividualChat />
