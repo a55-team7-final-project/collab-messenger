@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 import CreateMessage from "../CreateMessage/CreateMessage";
 import { onValue, ref } from "firebase/database";
 import { db } from "../../../config/firebase-setup";
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Flex, Text, VStack, Button, Input } from "@chakra-ui/react";
 import MemberList from "../MemberList/MemberList";
 import { getUserByHandle } from "../../../services/user-services";
 
@@ -108,33 +108,32 @@ export default function ChannelDetailed() {
     return channel && userData && (
         <Flex direction="column" justify="space-between" minHeight="100vh">
             <Flex>
-
-                <Box flex="1" overflowY="auto" pb={4}>
+                <Box flex="1" overflowY="auto" pb={4} width="850px"> {/* Set a constant width */}
                     {channel && channel.messages ? Object.keys(channel.messages).map((userHandle, index) => {
                         return <SingleChannelText key={index} message={channel.messages[userHandle]} />
                     }) : <p>No messages. Be the first to write something!</p>}
                 </Box>
                 {!channel.publicity && <Box width="300px" >
-                    <p>This is a private channel.</p>
-                    <div>
-                        <input
-                            type="text"
+                    <Text my={3}>This is a private channel.</Text>
+                    <VStack spacing={2} mx={10} mb={2}>
+                        <Input
                             placeholder="Enter member's username"
                             value={newMemberUsername}
                             onChange={(e) => setNewMemberUsername(e.target.value)}
                         />
-                        <br />
-                        <button onClick={addMember}>Add Member</button>
-                        <button onClick={removeMember}>Remove Member</button>
-                        {error && <p style={{ color: 'red' }}>{error}</p>}
-                        {message && <p style={{ color: 'green' }}>{message}</p>}
-                    </div>
+                        <Flex>
+                        <Button onClick={addMember} colorScheme="blue" mr={2} >Add</Button>
+                        <Button onClick={removeMember} colorScheme="teal">Remove</Button>
+                        </Flex>
+                        {error && <Text color="red">{error}</Text>}
+                        {message && <Text color="green">{message}</Text>}
+                    </VStack>                    
                     <MemberList members={channel.members} />
                 </Box>}
             </Flex>
-            <Box position="sticky" bottom={0} width="100%" borderTop="1px" borderColor="gray.200" backgroundColor="white" zIndex="sticky">
+            <Box position="sticky" bottom={1} width="100%" zIndex="sticky">
                 <CreateMessage />
             </Box>
         </Flex>
     )
-}
+}    
