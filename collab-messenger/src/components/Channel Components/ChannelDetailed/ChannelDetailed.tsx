@@ -131,7 +131,7 @@ export default function ChannelDetailed() {
                     <MemberList members={channel.members} />
                 </Box>}
             </Flex>
-            <Box position="sticky" bottom={1} width="100%" zIndex="sticky">
+            <Box position="sticky" bottom={0} width="100%" zIndex="sticky">
                 <CreateMessage />
             </Box>
         </Flex>
