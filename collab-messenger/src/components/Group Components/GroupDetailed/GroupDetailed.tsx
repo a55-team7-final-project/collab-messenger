@@ -6,7 +6,7 @@ import AllChannels from "../../Channel Components/AllChannels/AllChannels";
 import { Group } from "../../../types/types";
 import { getUserByHandle } from "../../../services/user-services";
 import MemberList from "../../Channel Components/MemberList/MemberList";
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Flex, Heading, Text, Button, Input, VStack } from "@chakra-ui/react";
 
 export default function GroupDetailed() {
     const [group, setGroup] = useState<Group | null>(null);
@@ -125,29 +125,31 @@ export default function GroupDetailed() {
     }
 
     return group && userData && (
-        <Flex>
-            <Box flex="1">
-                <h2>{group.name}</h2>
-                <p>Owner: {group.owner}</p>
-                {group.owner === userData.handle && <button onClick={deleteGroup} >Delete Group</button>}
-                {group.owner !== userData.handle && <button onClick={leaveGroup} >Leave Group</button>}
-                <br />
+        <Flex direction="column" align="center" justify="center" m={5}>
+            <Box flex="1" p={5} shadow="md" borderWidth="1px">
+                <Heading fontSize="xl">{group.name}</Heading>
+                <Text mt={4}>Owner: {group.owner}</Text>
+                <VStack spacing={4} align="stretch" mt={5}>
+                    {group.owner === userData.handle && 
+                        <Button colorScheme="teal" variant="outline" onClick={deleteGroup}>Delete Group</Button>}
+                    {group.owner !== userData.handle && 
+                        <Button colorScheme="teal" variant="outline" onClick={leaveGroup}>Leave Group</Button>}
+                </VStack>
                 <AllChannels groupOwner={group.owner} />
             </Box>
-            <Box width="300px">
-                <div>
-                    <input
+            <Box width="300px" p={5} shadow="md" borderWidth="1px">
+                <VStack spacing={4} align="stretch">
+                    <Input
                         type="text"
                         placeholder="Enter member's username"
                         value={newMemberUsername}
                         onChange={(e) => setNewMemberUsername(e.target.value)}
                     />
-                    <br />
-                    <button onClick={addMember}>Add Member</button>
-                    <button onClick={removeMember}>Remove Member</button>
+                    <Button colorScheme="teal" variant="outline" onClick={addMember}>Add Member</Button>
+                    <Button colorScheme="teal" variant="outline" onClick={removeMember}>Remove Member</Button>
                     {error && <p style={{ color: 'red' }}>{error}</p>}
                     {message && <p style={{ color: 'green' }}>{message}</p>}
-                </div>
+                </VStack>
                 <MemberList members={members} />
             </Box>
         </Flex>

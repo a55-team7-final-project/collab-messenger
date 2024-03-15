@@ -5,8 +5,7 @@ import { auth } from '../../config/firebase-setup';
 import AllGroups from '../../components/Group Components/AllGroups/AllGroups';
 import UserSearch from '../../components/User Page/UsersSearch';
 import { AppContext } from '../../context/AppContext';
-import { Box, Heading, Text, Button, VStack, useColorModeValue, Center, Container } from '@chakra-ui/react';
-
+import { Box, Heading, Text, Button, VStack, useColorModeValue, Center, Container, ScaleFade } from '@chakra-ui/react';
 
 const Home: React.FC = () => {
   const [user] = useAuthState(auth);
@@ -26,8 +25,10 @@ const Home: React.FC = () => {
           <Box p="4" borderWidth={1} borderRadius="lg">
             <UserSearch />
           </Box>
-          <Box p="4" borderWidth={1} borderRadius="lg">
-            <AllGroups/>
+          <Box p="4" borderWidth={1} borderRadius="lg" _hover={{ transform: "scale(1.05)" }} transition="all 0.2s">
+            <ScaleFade initialScale={0.9} in={true}>
+              <AllGroups/>
+            </ScaleFade>
           </Box>
         </VStack>
       ) : (
