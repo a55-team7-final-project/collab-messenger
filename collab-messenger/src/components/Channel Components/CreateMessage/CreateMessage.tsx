@@ -24,11 +24,11 @@ const CreateMessage = () => {
 
     return (
         userData && channelId && groupId && (
-            <Flex as="footer" p={2} position="sticky" bottom={0} width="100%" borderTop="1px" borderColor="black" backgroundColor="white" zIndex="sticky">
-                <Box flex="1" mr={2}>
+            <Flex as="footer" p={2} position="sticky" bottom={0} width="100%" backgroundColor="white" zIndex="sticky">
+                <Box flex="1" mr={2} borderColor="navy" >
                     <Input value={message} onChange={handleInputChange} placeholder="Enter your message here" />
                 </Box>
-                <Button onClick={createMessageClick}>Send</Button>
+                <Button backgroundColor="navy" color="white" onClick={createMessageClick} _hover={{ bg: "blue" }}>Send</Button>
             </Flex>
         )
     );
