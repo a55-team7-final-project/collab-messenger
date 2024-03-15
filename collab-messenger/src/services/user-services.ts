@@ -4,6 +4,8 @@ import { User } from "../types/types.js";
 import { uploadBytes, getDownloadURL, ref as sRef } from "firebase/storage";
 
 export const getUserByHandle = async (handle: string): Promise<User | null> => {
+    if (!handle) return null;
+    
     const snapshot = await get(ref(db, `users/${handle}`));
 
     if (!snapshot.exists()) {
