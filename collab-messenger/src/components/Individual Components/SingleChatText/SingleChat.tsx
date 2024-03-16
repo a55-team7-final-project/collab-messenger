@@ -1,28 +1,19 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
-import { useContext } from "react";
-import { AppContext } from "../../../context/AppContext";
-import { IndividualChat, User } from "../../../types/types";
+import { IndividualChat } from "../../../types/types";
 
-type SingleChatProps = {
-    chat: IndividualChat;
-    user: User;
-};
+interface SingleChatProps {
+    message: IndividualChat;
+}
 
-export default function SingleChat({ chat, user }: SingleChatProps) {
-    const navigate = useNavigate();
-    const { userData } = useContext(AppContext);
-
-    const onClick = () => {
-        if (userData) navigate(`/users/${userData.uid}/chats/${user.uid}`);
-    }
-
+const SingleChat: React.FC<SingleChatProps> = ({ message }) => {
     return (
-        <Box border="1px" borderColor="gray.200" borderRadius="md" p={4} onClick={onClick}>
-            <Flex justifyContent="space-between">
-                <Text fontWeight="bold">{user.handle}</Text>
-                <Text>{chat.text}</Text>
-            </Flex>
-        </Box>
+        <Flex align="center">
+            <Text fontWeight="bold" marginRight="2">{message.userHandle}:</Text>
+            <Box mt={2} border="1px" borderRadius="50" p="2" pr="4" pl="4" backgroundColor="navy" color="white" whiteSpace="pre-wrap" textAlign="left">
+                <Text fontWeight="bold">{message.text}</Text>
+            </Box>
+        </Flex>
     );
 }
+
+export default SingleChat;

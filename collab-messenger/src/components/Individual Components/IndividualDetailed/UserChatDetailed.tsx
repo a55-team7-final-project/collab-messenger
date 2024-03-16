@@ -1,5 +1,4 @@
 import { useContext, useEffect, useState } from "react";
-import {getUserData} from "../../../services/user-services";
 import { AppContext } from "../../../context/AppContext";
 import SingleChat from "../SingleChatText/SingleChat";
 import { useParams } from "react-router-dom";
@@ -13,7 +12,7 @@ import MemberList from "../../Channel Components/MemberList/MemberList";
 const UserChatDetailed: React.FC = () => {
     const { userData } = useContext(AppContext);
     const [chat, setChat] = useState<UserChatDetailed | null>(null);
-    const { userId, chatId } = useParams<{ userId: string, chatId: string }>();
+    const { chatId } = useParams<{ userId: string, chatId: string }>();
 
     useEffect(() => {
         if (userData && chatId) {

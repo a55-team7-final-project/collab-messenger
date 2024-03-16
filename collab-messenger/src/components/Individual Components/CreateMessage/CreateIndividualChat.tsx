@@ -7,7 +7,7 @@ import { Box, Button, Flex, Input } from "@chakra-ui/react";
 const CreateIndividualChat: React.FC = () => {
     const { userData } = useContext(AppContext);
     const [message, setMessage] = useState<string>('');
-    const { userId } = useParams<{ userId: string }>();
+    const { chatId } = useParams<{ chatId: string }>();
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setMessage(e.target.value);
@@ -18,12 +18,12 @@ const CreateIndividualChat: React.FC = () => {
             return;
         }
         
-        await addIndividualMessage(userId, userData!.handle, message);
+        await addIndividualMessage(chatId, userData!.handle, message);
         setMessage('');
     }
 
     return (
-        userData && userId && (
+        userData && chatId && (
             <Flex as="footer" p={2} position="sticky" bottom={0} width="100%" borderTop="1px" borderColor="black" backgroundColor="white" zIndex="sticky">
                 <Box flex="1" mr={2}>
                     <Input value={message} onChange={handleInputChange} placeholder="Enter your message here" />

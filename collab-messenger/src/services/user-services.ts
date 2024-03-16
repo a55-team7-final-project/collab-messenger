@@ -64,15 +64,23 @@ export const getAllUsers = async (): Promise<User[]> => {
     }
 };
 
-export const addIndividualMessage = async (userId: string, userHandle: string, text: string) => {
-    const newMessageRef = ref(db, `users/${userId}/messages`);
-    const message =  {
-        userHandle,
-        text,
-        createdOn: Date.now(),
-    };
+export const addIndividualMessage = async (chatID: string, userHandle: string, text: string) => {
+    try {
+        const chatRef = ref(db, `chats/${chatID}`);
 
-    await push(newMessageRef, message);
+        const message =  {
+            userHandle,
+            text,
+            createdOn: Date.now(),
+        };
+    
+        await push(chatRef, message);
+        return true;
+        
+    } catch (error) {
+        console.error("Error adding message:", error);
+        return false;
+    }
 };
 
 
