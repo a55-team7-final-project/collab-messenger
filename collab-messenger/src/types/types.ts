@@ -42,6 +42,6 @@ export type IndividualChat = {
 
 export type UserChatDetailed = {
     id: string;
-    chats: IndividualChat[];
+    messages: { [userHandle: string]: IndividualChat };
     members: User[];
 };
