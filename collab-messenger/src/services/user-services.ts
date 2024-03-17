@@ -2,6 +2,7 @@ import { get, set, ref, push, query, update, orderByChild, equalTo } from "fireb
 import { db, storage } from "../config/firebase-setup.js";
 import { User } from "../types/types.js";
 import { uploadBytes, getDownloadURL, ref as sRef } from "firebase/storage";
+import { onValue } from "firebase/database";
 
 export const getUserByHandle = async (handle: string): Promise<User | null> => {
     if (!handle) return null;
@@ -64,6 +65,26 @@ export const getAllUsers = async (): Promise<User[]> => {
     }
 };
 
+// chat services for individual chats
+
+//  function to create a new chat between two users
+export const createChat = async (user1: string, user2: string) => {
+    try {
+        const chatRef = ref(db, `chats/${user1}_${user2}`);
+        const snapshot = await get(chatRef);
+
+        if (!snapshot.exists()) {
+            await set(chatRef, { 
+                createdOn: Date.now(), 
+                users: [user1, user2]
+            });
+        }
+        return `${user1}_${user2}`;
+    } catch (error) {
+        console.error("Error creating chat:", error);
+        return null;
+    }
+}
 export const addIndividualMessage = async (chatID: string, userHandle: string, text: string) => {
     try {
         const chatRef = ref(db, `chats/${chatID}`);

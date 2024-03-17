@@ -1,4 +1,4 @@
-import { getAllUsers } from "../../services/user-services";
+import { createChat, getAllUsers } from "../../services/user-services";
 import { useState, useEffect } from 'react';
 import { Box, Input, Text, Flex, Avatar } from "@chakra-ui/react";
 import {User} from '../../types/types';
@@ -37,9 +37,14 @@ const UserSearch: React.FC = () => {
 
     //on click when searching for someone it always leads to the same chat
     //no matter who texts the person the chat is the same and is not individual
-    const handleUserClick = (userId: string) => {
-        if (userData) navigate(`/users/${userData.uid}/chats/${userId}`);
-    };
+    const handleUserClick = async (userId: string) => {
+    if (userData) {    
+        const chatId = await createChat(userData.uid, userId); // create a new chat when a user is clicked before navigating to the chat page
+        if (chatId) {
+            navigate(`/users/${userData.uid}/chats/${chatId}`);
+        } 
+    }
+}
 
     return (
         <Box>
