@@ -35,6 +35,8 @@ const UserSearch: React.FC = () => {
         setHasSearched(true);
     };
 
+    //on click when searching for someone it always leads to the same chat
+    //no matter who texts the person the chat is the same and is not individual
     const handleUserClick = (userId: string) => {
         if (userData) navigate(`/users/${userData.uid}/chats/${userId}`);
     };

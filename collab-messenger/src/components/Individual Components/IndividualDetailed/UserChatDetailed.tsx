@@ -23,7 +23,11 @@ const UserChatDetailed: React.FC = () => {
                         id: chatId,
                         ...snapshot.val(),
                         createdOn: new Date(snapshot.val().createdOn),
-                        messages: snapshot.val().messages ? snapshot.val().messages : {}
+                        messages: Object.keys(snapshot.val()).map(messageId => ({
+                            id: messageId,
+                            createdOn: new Date(snapshot.val()[messageId].createdOn),
+                            ...snapshot.val()[messageId]
+                        }))                        
                     };
                     setChat(chat);
                 } else {
@@ -38,7 +42,7 @@ const UserChatDetailed: React.FC = () => {
         <Flex direction="column" justify="space-between" minHeight="100vh">
             <Flex>
                 <Box flex="1" overflowY="auto" pb={4}>
-                {chat && chat.messages ? Object.keys(chat.messages).map((userHandle, index) => {
+                {chat ? Object.keys(chat.messages).map((userHandle, index) => {
                         return <SingleChat key={index} message={chat.messages[userHandle]} />
                     }) : <p>No messages. Be the first to write something!</p>}
                 </Box>
