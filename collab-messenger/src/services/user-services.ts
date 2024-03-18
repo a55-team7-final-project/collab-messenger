@@ -2,7 +2,6 @@ import { get, set, ref, push, query, update, orderByChild, equalTo } from "fireb
 import { db, storage } from "../config/firebase-setup.js";
 import { User } from "../types/types.js";
 import { uploadBytes, getDownloadURL, ref as sRef } from "firebase/storage";
-import { onValue } from "firebase/database";
 
 export const getUserByHandle = async (handle: string): Promise<User | null> => {
     if (!handle) return null;
