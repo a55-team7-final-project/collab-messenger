@@ -120,10 +120,10 @@ export default function GroupDetailed() {
 
     if (group && userData) {
         if (!members.includes(userData.handle)) {
-        return <div>You are not a member of this group.</div>
+            return <div style={{color: 'red'}}>You are not a member of this group.</div>
         }
     }
-
+    
     return group && userData && (
         <Flex direction="column" align="center" justify="center" m={5} bg="gray.100" borderRadius="lg">
             <Box flex="1" p={5} shadow="lg" borderWidth="1px" borderRadius="md" bg="white">
@@ -158,5 +158,5 @@ export default function GroupDetailed() {
                 <MemberList members={members} />
             </Box>
         </Flex>
-    )
+    );  
 }

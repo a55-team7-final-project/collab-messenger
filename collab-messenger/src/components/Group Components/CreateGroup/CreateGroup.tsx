@@ -1,6 +1,8 @@
 import { useContext, useState } from "react"
 import { AppContext } from "../../../context/AppContext"
 import { addGroup, getGroupByName } from "../../../services/group-services";
+import { Box, Button, FormControl, FormLabel, Input, Text } from "@chakra-ui/react";
+
 
 interface CreateGroupProps { }
 
@@ -37,12 +39,16 @@ const CreateGroup: React.FC<CreateGroupProps> = () => {
 
     return (
         userData && (
-            <>
-                <label htmlFor="group-name"></label>
-                <input value={group.name} onChange={handleInputChange} type="text" name="group-name" id="group-name" placeholder="Enter group name" />
-                <button id="create-group-button" onClick={createGroupClick}>Create Group</button>
-                {errorMessage && <p>{errorMessage}</p>}
-            </>
+            <Box width="300px" margin="auto" marginTop="50px">
+                <FormControl id="group-name">
+                    
+                    <Input value={group.name} onChange={handleInputChange} type="text" placeholder="Enter group name" />
+                </FormControl>
+                <Button id="create-group-button" onClick={createGroupClick} colorScheme="teal" size="md" width="100%" marginTop="20px">
+                    Create Group
+                </Button>
+                {errorMessage && <Text color="red.500" marginTop="10px">{errorMessage}</Text>}
+            </Box>
         )
     );
 };

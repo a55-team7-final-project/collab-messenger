@@ -7,6 +7,8 @@ import { Group } from "../../../types/types";
 import { useNavigate } from "react-router-dom";
 import { onValue, ref } from "firebase/database";
 import { db } from "../../../config/firebase-setup";
+import { Box, Heading, Stack, Button } from "@chakra-ui/react";
+
 
 interface AllGroupsProps { }
 
@@ -43,12 +45,22 @@ const AllGroups: React.FC<AllGroupsProps> = () => {
 
 
     return (
-        <>
+        <Box maxW="xl" mx="auto" p={8}>
+            <Heading mb={6}>Groups</Heading>
             <CreateGroup />
-            {userData && allGroups.map((group) => (
-                <SingleGroup key={group.id} group={group} currentUser={userData} onClick={() => onClick(group.id)} />
-            ))}
-        </>
+            {userData && (
+                <Stack spacing={5}>
+                    {allGroups.map((group) => (
+                        <SingleGroup
+                            key={group.id}
+                            group={group}
+                            currentUser={userData}
+                            onClick={onClick}
+                        />
+                    ))}
+                </Stack>
+            )}
+        </Box>
     );
 };
 
