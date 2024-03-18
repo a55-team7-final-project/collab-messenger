@@ -1,4 +1,5 @@
-import { createChat, getAllUsers } from "../../services/user-services";
+import { getAllUsers } from "../../services/user-services";
+import { createChat } from "../../services/messages-services";
 import { useState, useEffect } from 'react';
 import { Box, Input, Text, Flex, Avatar } from "@chakra-ui/react";
 import {User} from '../../types/types';

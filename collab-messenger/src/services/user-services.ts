@@ -64,43 +64,6 @@ export const getAllUsers = async (): Promise<User[]> => {
     }
 };
 
-// chat services for individual chats
-
-//  function to create a new chat between two users
-export const createChat = async (user1: string, user2: string) => {
-    const users = [user1, user2].sort();
-    try {
-        const chatRef = ref(db, `chats/${users[0]}_${users[1]}`);
-        const snapshot = await get(chatRef);
-
-        if (!snapshot.exists()) {
-            await set(chatRef, {});
-        }
-        return `${users[0]}_${users[1]}`;
-    } catch (error) {
-        console.error("Error creating chat:", error);
-        return null;
-    }
-}
-
-export const addIndividualMessage = async (chatID: string, userHandle: string, text: string) => {
-    try {
-        const chatRef = ref(db, `chats/${chatID}`);
-
-        const message =  {
-            userHandle,
-            text,
-            createdOn: Date.now(),
-        };
-    
-        await push(chatRef, message);
-        return true;
-        
-    } catch (error) {
-        console.error("Error adding message:", error);
-        return false;
-    }
-};
 
 
 export const updateUserDetails = async (username: string, userInfo: { [key: string]: unknown }): Promise<void> => {
@@ -108,19 +71,15 @@ export const updateUserDetails = async (username: string, userInfo: { [key: stri
     await update(userRef, userInfo);
 }
 
-export const uploadImage = async (userId: string, file: File): Promise<string | null> => {
-    if (!file) {
-        console.log("No file provided for upload.");
-        return null;
-    }
 
+export const uploadImage = async (userId, file) => {
+    if (!file) return;
     const storageRef = sRef(storage, `users/${userId}/${file.name}`);
     const snapshot = await uploadBytes(storageRef, file);
-    const downloadURL = await getDownloadURL(snapshot.ref);
+    return getDownloadURL(snapshot.ref);
+  };
 
-    console.log(`Image uploaded successfully. Download URL: ${downloadURL}`);
-    return downloadURL;
-}
+
 
 export const saveProfilePictureUrl = async (handle: string, url: string): Promise<void> => {
     const userRef = ref(db, `users/${handle}`);

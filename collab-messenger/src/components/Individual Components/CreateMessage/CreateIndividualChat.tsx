@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { AppContext } from "../../../context/AppContext";
-import { addIndividualMessage } from "../../../services/user-services"; 
+import { addIndividualMessage } from "../../../services/messages-services";
 import { useParams } from "react-router-dom";
 import { Box, Button, Flex, Input } from "@chakra-ui/react";
 

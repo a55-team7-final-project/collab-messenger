@@ -20,6 +20,8 @@ import AllGroups from './components/Group Components/AllGroups/AllGroups';
 import CreateGroup from './components/Group Components/CreateGroup/CreateGroup';
 import Users from './components/User Page/UsersSearch';
 import UserChatDetailed from './components/Individual Components/IndividualDetailed/UserChatDetailed';
+import EditProfile from './components/User Page/EditProfile';
+import AllChats from './components/Individual Components/AllChats/AllChats';
 
 interface AppContextInterface {
   user: FirebaseUser | null;
@@ -95,9 +97,11 @@ const App: FC = () => {
           <Route path="/groups/create" element={<CreateGroup />} />
           <Route path="/groups/:groupId" element={<GroupDetailed />} />
           <Route path="/chats/:chatId" element={<UserChatDetailed />} />
+          <Route path="/chats" element={<AllChats />} />
           <Route path="/users" element={<Users />} />
           <Route path="/groups/:groupId/channels/:channelId" element={<ChannelDetailed />} />
           <Route path="/profile" element={<UserPage userId={appContext.user?.uid || ''} />} />
+          <Route path="/profile/edit" element={<EditProfile />} />
         </Routes>
         <Footer />
       </BrowserRouter>
