@@ -2,7 +2,7 @@ import { useEffect, useState, useContext } from 'react';
 import { getUserByHandle, uploadImage, updateUserDetails } from '../../services/user-services';
 import { useNavigate } from 'react-router-dom';
 import { AppContext } from '../../context/AppContext';
-import { Box, Button, Flex, Image, Input, Stack, Text, VStack, Alert, AlertIcon, Avatar, Heading, Tag, TagLabel, TagLeftIcon, TagRightIcon, Tooltip, Spacer } from '@chakra-ui/react';
+import { Box, Button, Flex, Input, Stack, VStack, Avatar, Heading, Tag, TagLabel, TagLeftIcon, TagRightIcon, Tooltip, Spacer } from '@chakra-ui/react';
 import { EditIcon, AttachmentIcon, CheckCircleIcon, WarningIcon } from '@chakra-ui/icons';
 
 interface UserPageProps {

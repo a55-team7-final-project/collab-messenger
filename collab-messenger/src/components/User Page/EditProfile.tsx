@@ -2,7 +2,8 @@ import { useState, useContext, useEffect } from 'react';
 import { AppContext } from '../../context/AppContext';
 import { updateUserDetails } from '../../services/user-services';
 import { useNavigate } from 'react-router-dom';
-import { Box, Button, FormControl, FormLabel, Input, Text, VStack } from '@chakra-ui/react';
+import { Box, Button, FormControl, FormLabel, Input, VStack, Heading, Tag, TagLabel, TagLeftIcon, TagRightIcon, Tooltip, Spacer } from '@chakra-ui/react';
+import { EditIcon, CheckCircleIcon, WarningIcon } from '@chakra-ui/icons';
 
 const EditProfile = () => {
   const { userData, setContext } = useContext(AppContext);
@@ -29,6 +30,7 @@ const EditProfile = () => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setUserInfo(prevState => ({ ...prevState, [name]: value }));
+    setFormError('');
   };
 
   const saveChanges = async () => {
@@ -55,26 +57,53 @@ const EditProfile = () => {
   }
 
   return (
-    <Box p={5} shadow="md" borderWidth="1px">
+    <Box p={5} shadow="md" borderWidth="1px" bg="gray.50" borderRadius="lg" minHeight="100vh">
       <VStack spacing={4}>
-        <Text fontSize="2xl">Edit Profile</Text>
+        <Heading as="h2" size="lg" color="teal.500">Edit Profile</Heading>
         <FormControl id="firstName">
           <FormLabel>First Name</FormLabel>
-          <Input name="firstName" value={userInfo.firstName} onChange={handleInputChange} placeholder="First Name" />
+          <Input name="firstName" value={userInfo.firstName} onChange={handleInputChange} placeholder="First Name" bg="teal.100" />
         </FormControl>
+        <Spacer height="20px"/>
         <FormControl id="lastName">
           <FormLabel>Last Name</FormLabel>
-          <Input name="lastName" value={userInfo.lastName} onChange={handleInputChange} placeholder="Last Name" />
+          <Input name="lastName" value={userInfo.lastName} onChange={handleInputChange} placeholder="Last Name" bg="teal.100" />
         </FormControl>
+        <Spacer height="20px"/>
         <FormControl id="email">
           <FormLabel>Email</FormLabel>
-          <Input name="email" value={userInfo.email} onChange={handleInputChange} placeholder="Email" />
+          <Input name="email" value={userInfo.email} onChange={handleInputChange} placeholder="Email" bg="teal.100" />
         </FormControl>
-        {formError && <Text color="red.500">{formError}</Text>}
-        {updateError && <Text color="red.500">Failed to update profile.</Text>}
-        {updateSuccess && <Text color="green.500">Profile updated successfully!</Text>}
-        <Button colorScheme="teal" variant="outline" onClick={saveChanges}>Save Changes</Button>
-        <Button colorScheme="teal" variant="ghost" onClick={goBack}>Back</Button>
+        <Spacer height="20px"/>
+        {formError && (
+            <Tooltip label={formError} aria-label="A tooltip">
+                <Tag size="lg" variant="solid" colorScheme="red">
+                    <TagLeftIcon boxSize="12px" as={WarningIcon} />
+                    <TagLabel>Error</TagLabel>
+                    <TagRightIcon boxSize="16px" as={WarningIcon} />
+                </Tag>
+            </Tooltip>
+        )}
+        {updateError && (
+            <Tooltip label="Failed to update profile." aria-label="A tooltip">
+                <Tag size="lg" variant="solid" colorScheme="red">
+                    <TagLeftIcon boxSize="12px" as={WarningIcon} />
+                    <TagLabel>Error</TagLabel>
+                    <TagRightIcon boxSize="16px" as={WarningIcon} />
+                </Tag>
+            </Tooltip>
+        )}
+        {updateSuccess && (
+            <Tooltip label="Profile updated successfully!" aria-label="A tooltip">
+                <Tag size="lg" variant="solid" colorScheme="green">
+                    <TagLeftIcon boxSize="12px" as={CheckCircleIcon} />
+                    <TagLabel>Status</TagLabel>
+                    <TagRightIcon boxSize="16px" as={CheckCircleIcon} />
+                </Tag>
+            </Tooltip>
+        )}
+        <Button leftIcon={<EditIcon />} colorScheme="teal" variant="outline" onClick={saveChanges}>Save Changes</Button>
+        <Button leftIcon={<EditIcon />} colorScheme="teal" variant="ghost" onClick={goBack}>Back</Button>
       </VStack>
     </Box>
   );
