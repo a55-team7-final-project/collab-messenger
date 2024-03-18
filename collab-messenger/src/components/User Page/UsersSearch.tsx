@@ -35,13 +35,11 @@ const UserSearch: React.FC = () => {
         setHasSearched(true);
     };
 
-    //on click when searching for someone it always leads to the same chat
-    //no matter who texts the person the chat is the same and is not individual
     const handleUserClick = async (userId: string) => {
     if (userData) {    
         const chatId = await createChat(userData.uid, userId); // create a new chat when a user is clicked before navigating to the chat page
         if (chatId) {
-            navigate(`/users/${userData.uid}/chats/${chatId}`);
+            navigate(`/chats/${chatId}`);
         } 
     }
 }

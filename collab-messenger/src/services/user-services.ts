@@ -68,22 +68,21 @@ export const getAllUsers = async (): Promise<User[]> => {
 
 //  function to create a new chat between two users
 export const createChat = async (user1: string, user2: string) => {
+    const users = [user1, user2].sort();
     try {
-        const chatRef = ref(db, `chats/${user1}_${user2}`);
+        const chatRef = ref(db, `chats/${users[0]}_${users[1]}`);
         const snapshot = await get(chatRef);
 
         if (!snapshot.exists()) {
-            await set(chatRef, { 
-                createdOn: Date.now(), 
-                users: [user1, user2]
-            });
+            await set(chatRef, {});
         }
-        return `${user1}_${user2}`;
+        return `${users[0]}_${users[1]}`;
     } catch (error) {
         console.error("Error creating chat:", error);
         return null;
     }
 }
+
 export const addIndividualMessage = async (chatID: string, userHandle: string, text: string) => {
     try {
         const chatRef = ref(db, `chats/${chatID}`);
