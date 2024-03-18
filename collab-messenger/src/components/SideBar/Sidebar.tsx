@@ -103,7 +103,7 @@
 import React, { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Box, VStack, Text, IconButton, useColorMode, useColorModeValue, Button } from '@chakra-ui/react';
-import { FaSteam, FaComments, FaCalendar, FaSun, FaMoon, FaSmile } from 'react-icons/fa';
+import { FaSteam, FaComments, FaCalendar, FaSun, FaMoon, FaHome, FaUser, } from 'react-icons/fa';
 import { auth } from '../../config/firebase-setup';
 import { AppContext } from '../../context/AppContext';
 // import UserChatDetailed from '../Individual Components/IndividualDetailed/UserChatDetailed';
@@ -136,6 +136,14 @@ const Sidebar: React.FC = () => {
     >
       <VStack spacing={4}>
         <Text fontSize="xl" fontWeight="bold">Collab Messenger</Text>
+        <Link to="/">
+    <IconButton aria-label="Home" icon={<FaHome />} variant="ghost" color="teal.500" />
+    <Text>Home</Text>
+  </Link>
+  <Link to="/profile">
+    <IconButton aria-label="Profile" icon={<FaUser />} variant="ghost" color="teal.500" />
+    <Text>My Profile</Text>
+  </Link>
         <Link to="/groups">
           <IconButton aria-label="Teams" icon={<FaSteam />} variant="ghost" color="teal.500" />
           <Text>Teams</Text>
