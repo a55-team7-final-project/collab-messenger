@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Badge } from "@chakra-ui/react";
 import { useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { AppContext } from "../../../context/AppContext";
@@ -23,12 +23,12 @@ export default function SingleChannel({ channel, groupOwner }) {
     return userData && groupId && (
         <Box border="1px" borderColor="gray.200" borderRadius="md" p={4} onClick={onClickChannel}>
             <Flex justifyContent="space-between">
-                <Text fontWeight="bold">{channel.name}</Text>
-                {userData.handle === groupOwner && channel.name !== 'General' && <Button onClick={deleteChannel}>Delete Channel</Button>}
+                <Heading size="md">{channel.name}</Heading>
+                {userData.handle === groupOwner && channel.name !== 'General' && <Button colorScheme="red" onClick={deleteChannel}>Delete Channel</Button>}
             </Flex>
             <Flex justifyContent="space-between" mt={2}>
-                <Text>{channel.publicity ? 'public' : 'private'}</Text>
+                <Badge colorScheme={channel.publicity ? 'green' : 'red'}>{channel.publicity ? 'public' : 'private'}</Badge>
             </Flex>
         </Box>
-    )
+    );
 }

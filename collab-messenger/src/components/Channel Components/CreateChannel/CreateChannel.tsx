@@ -2,6 +2,7 @@ import { useContext, useState } from "react"
 import { AppContext } from "../../../context/AppContext"
 import { addGroupChannel } from "../../../services/group-services";
 import { useParams } from "react-router-dom";
+import { Alert, Button, FormControl, FormLabel, Input, Radio, RadioGroup, Stack, VStack } from "@chakra-ui/react";
 
 export default function CreateChannel () {
 
@@ -41,16 +42,20 @@ export default function CreateChannel () {
 
     return (
         userData && groupId && (
-            <>
-                <label htmlFor="channel-name"></label>
-                <input value={channel.name} onChange={handleInputChange} type="text" name="channel-name" id="channel-name" placeholder="Enter channel name" />
-                <div onChange={handleRadioChange}>
-                    <input type="radio" value="public" name="publicity" defaultChecked /> Public
-                    <input type="radio" value="private" name="publicity" /> Private
-                </div>
-                <button id="create-channel-button" onClick={createChannelClick}>Create Channel</button>
-                {errorMessage && <p>{errorMessage}</p>}
-            </>
+            <VStack spacing={4} align="stretch" bg="teal.50" p={5} borderRadius="md" boxShadow="xl">
+                <FormControl id="channel-name">
+                    <FormLabel>Channel Name</FormLabel>
+                    <Input value={channel.name} onChange={handleInputChange} placeholder="Enter channel name" bg="white" />
+                </FormControl>
+                <RadioGroup onChange={handleRadioChange} defaultValue="public">
+                    <Stack direction="row">
+                        <Radio colorScheme="green" value="public">Public</Radio>
+                        <Radio colorScheme="red" value="private">Private</Radio>
+                    </Stack>
+                </RadioGroup>
+                <Button colorScheme="teal" id="create-channel-button" onClick={createChannelClick}>Create Channel</Button>
+                {errorMessage && <Alert status="error">{errorMessage}</Alert>}
+            </VStack>
         )
     );
 }

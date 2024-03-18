@@ -6,7 +6,7 @@ import AllChannels from "../../Channel Components/AllChannels/AllChannels";
 import { Group } from "../../../types/types";
 import { getUserByHandle } from "../../../services/user-services";
 import MemberList from "../../Channel Components/MemberList/MemberList";
-import { Box, Flex, Heading, Text, Button, Input, VStack } from "@chakra-ui/react";
+import { Box, Flex, Heading, Text, Button, Input, VStack, Spacer } from "@chakra-ui/react";
 
 export default function GroupDetailed() {
     const [group, setGroup] = useState<Group | null>(null);
@@ -125,30 +125,35 @@ export default function GroupDetailed() {
     }
 
     return group && userData && (
-        <Flex direction="column" align="center" justify="center" m={5}>
-            <Box flex="1" p={5} shadow="md" borderWidth="1px">
-                <Heading fontSize="xl">{group.name}</Heading>
-                <Text mt={4}>Owner: {group.owner}</Text>
+        <Flex direction="column" align="center" justify="center" m={5} bg="gray.100" borderRadius="lg">
+            <Box flex="1" p={5} shadow="lg" borderWidth="1px" borderRadius="md" bg="white">
+                <Heading fontSize="2xl" color="teal.500">{group.name}</Heading>
+                <Text mt={4} fontSize="lg" color="gray.600">Owner: {group.owner}</Text>
+                <AllChannels groupOwner={group.owner} />
+                <Spacer />
                 <VStack spacing={4} align="stretch" mt={5}>
                     {group.owner === userData.handle && 
-                        <Button colorScheme="teal" variant="outline" onClick={deleteGroup}>Delete Group</Button>}
+                        <Button colorScheme="teal" variant="solid" onClick={deleteGroup}>Delete Group</Button>}
                     {group.owner !== userData.handle && 
-                        <Button colorScheme="teal" variant="outline" onClick={leaveGroup}>Leave Group</Button>}
+                        <Button colorScheme="teal" variant="solid" onClick={leaveGroup}>Leave Group</Button>}
                 </VStack>
-                <AllChannels groupOwner={group.owner} />
             </Box>
-            <Box width="300px" p={5} shadow="md" borderWidth="1px">
+            <Box width="300px" p={5} shadow="lg" borderWidth="1px" borderRadius="md" bg="white" mt={5}>
                 <VStack spacing={4} align="stretch">
                     <Input
                         type="text"
                         placeholder="Enter member's username"
                         value={newMemberUsername}
                         onChange={(e) => setNewMemberUsername(e.target.value)}
+                        bg="gray.100"
                     />
-                    <Button colorScheme="teal" variant="outline" onClick={addMember}>Add Member</Button>
-                    <Button colorScheme="teal" variant="outline" onClick={removeMember}>Remove Member</Button>
-                    {error && <p style={{ color: 'red' }}>{error}</p>}
-                    {message && <p style={{ color: 'green' }}>{message}</p>}
+                    <Spacer />
+                    <Button colorScheme="teal" variant="solid" onClick={addMember}>Add Member</Button>
+                    <Spacer />
+                    <Button colorScheme="teal" variant="solid" onClick={removeMember}>Remove Member</Button>
+                    <Spacer />
+                    {error && <Text color="red.500">{error}</Text>}
+                    {message && <Text color="green.500">{message}</Text>}
                 </VStack>
                 <MemberList members={members} />
             </Box>
