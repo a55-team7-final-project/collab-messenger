@@ -8,6 +8,7 @@ import { db } from "../../../config/firebase-setup";
 import { Box, Flex } from "@chakra-ui/react";
 import { UserChatDetailed } from "../../../types/types";
 import MemberList from "../../Channel Components/MemberList/MemberList";
+import CustomEmojiPicker from "../../EmojiPicker/EmojiPicker";
 
 const UserChatDetailed: React.FC = () => {
     const { userData } = useContext(AppContext);
@@ -27,7 +28,7 @@ const UserChatDetailed: React.FC = () => {
                             id: messageId,
                             createdOn: new Date(snapshot.val()[messageId].createdOn),
                             ...snapshot.val()[messageId]
-                        }))                        
+                        }))
                     };
                     setChat(chat);
                 } else {
@@ -38,20 +39,25 @@ const UserChatDetailed: React.FC = () => {
         }
     }, [chatId, userData]);
 
+    const handleEmojiSelect = (emoji: string) => {
+        console.log('Selected emoji:', emoji);
+    };
+
     return userData && chatId && (
         <Flex direction="column" justify="space-between" minHeight="100vh">
             <Flex>
                 <Box flex="1" overflowY="auto" pb={4}>
-                {chat ? Object.keys(chat.messages).map((userHandle, index) => {
+                    {chat ? Object.keys(chat.messages).map((userHandle, index) => {
                         return <SingleChat key={index} message={chat.messages[userHandle]} />
                     }) : <p>No messages. Be the first to write something!</p>}
                 </Box>
                 {chat && <Box width="300px">
-                    <MemberList members={chat.members} /> 
+                    <MemberList members={chat.members} />
                 </Box>}
             </Flex>
             <Box position="sticky" bottom={0} width="100%" borderTop="1px" borderColor="gray.200" backgroundColor="white" zIndex="sticky">
                 <CreateIndividualChat />
+                <CustomEmojiPicker onSelectEmoji={handleEmojiSelect} /> 
             </Box>
         </Flex>
     )

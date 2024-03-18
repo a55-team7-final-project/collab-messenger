@@ -6,7 +6,7 @@ import { auth } from './config/firebase-setup';
 import { getUserData, getUserByHandle } from './services/user-services';
 import Register from './Views/Register/Register';
 import Home from './Views/Home/Home';
-import Header from './components/Header/Header';
+import Sidebar from './components/SideBar/Sidebar';
 import Footer from './components/Footer/Footer';
 import { User } from './types/types';
 import { User as FirebaseUser } from 'firebase/auth';
@@ -24,6 +24,8 @@ import UserChatDetailed from './components/Individual Components/IndividualDetai
 interface AppContextInterface {
   user: FirebaseUser | null;
   userData: User | null;
+  groups: any[];
+  chats: any[];
   setContext?: React.Dispatch<React.SetStateAction<AppContextInterface>>;
 }
 
@@ -31,6 +33,8 @@ const App: FC = () => {
   const [appContext, setContext] = useState<AppContextInterface>({
     user: null,
     userData: null,
+    groups: [],
+    chats: [],
   });
 
   const [user, loading] = useAuthState(auth);
@@ -44,6 +48,8 @@ const App: FC = () => {
             setContext({
               user,
               userData,
+              groups: [],
+              chats: [],
             });
           }
           setShowLoading(false);
@@ -54,13 +60,15 @@ const App: FC = () => {
   }, [user]);
 
   useEffect(() => {
-    if (user && user.displayName) { 
-      getUserByHandle(user.displayName) 
+    if (user && user.displayName) {
+      getUserByHandle(user.displayName)
         .then((userData) => {
           if (userData) {
             setContext({
               user,
               userData,
+              groups: [],
+              chats: [],
             });
           }
           setShowLoading(false);
@@ -78,7 +86,7 @@ const App: FC = () => {
   return (
     <AppContext.Provider value={{ ...appContext, setContext }}>
       <BrowserRouter>
-        <Header />
+        <Sidebar />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/register" element={<Register />} />
