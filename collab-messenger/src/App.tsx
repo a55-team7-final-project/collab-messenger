@@ -96,7 +96,7 @@ const App: FC = () => {
           <Route path="/groups" element={<AllGroups />} />
           <Route path="/groups/create" element={<CreateGroup />} />
           <Route path="/groups/:groupId" element={<GroupDetailed />} />
-          <Route path="/user/:userId/chats/:chatId" element={<UserChatDetailed />} />
+          <Route path="/chats/:chatId" element={<UserChatDetailed />} />
           <Route path="/chats" element={<AllChats />} />
           <Route path="/users" element={<Users />} />
           <Route path="/groups/:groupId/channels/:channelId" element={<ChannelDetailed />} />

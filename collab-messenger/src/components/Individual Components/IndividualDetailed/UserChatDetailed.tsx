@@ -9,12 +9,13 @@ import { Box, Flex, Text } from "@chakra-ui/react";
 import { UserChatDetailed } from "../../../types/types";
 import CustomEmojiPicker from "../../EmojiPicker/EmojiPicker";
 import { getUserData } from "../../../services/user-services";
+import SingleChannelText from "../../Channel Components/SIngleChannelText/SingleChannelText";
 
 const UserChatDetailed: React.FC = () => {
     const { userData } = useContext(AppContext);
     const [chat, setChat] = useState<UserChatDetailed | null>(null);
     const [otherUser, setOtherUser] = useState(null);
-    const { chatId, userId } = useParams<{ userId: string, chatId: string }>();
+    const { chatId } = useParams<{ userId: string, chatId: string }>();
 
     useEffect(() => {
         if (userData && chatId) {
@@ -32,6 +33,8 @@ const UserChatDetailed: React.FC = () => {
                         }))
                     };
                     setChat(chat);
+                    const userId = chatId.split('_').filter(id => id !== userData.uid)[0];
+                    getUserData(userId).then(setOtherUser);
                 } else {
                     setChat(null);
                 }
@@ -40,23 +43,18 @@ const UserChatDetailed: React.FC = () => {
         }
     }, [chatId, userData]);
 
-    useEffect(() => {
-        if (userId) {
-            getUserData(userId).then(setOtherUser);
-        }
-    }, [userId]);
-
     const handleEmojiSelect = (emoji: string) => {
         console.log('Selected emoji:', emoji);
     };
 
-    return userData && chatId && otherUser && (
+    return userData && chatId && (
         <Flex direction="column" justify="space-between" minHeight="100vh">
-            <Text fontSize="2xl" fontWeight="bold">Chat With {otherUser.handle}</Text>
+            {otherUser ? <Text fontSize="2xl" fontWeight="bold">Chat With {otherUser.handle}</Text> :
+            <Text fontSize="2xl" fontWeight="bold">Messaging Yourself</Text>}
             <Flex>
                 <Box flex="1" overflowY="auto" pb={4}>
                     {chat ? Object.keys(chat.messages).map((userHandle, index) => {
-                        return <SingleChat key={index} message={chat.messages[userHandle]} />
+                        return <SingleChannelText key={index} message={chat.messages[userHandle]} />
                     }) : <p>No messages. Be the first to write something!</p>}
                 </Box>
             </Flex>
