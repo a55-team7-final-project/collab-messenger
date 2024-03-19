@@ -46,11 +46,11 @@ const AllGroups: React.FC<AllGroupsProps> = () => {
 
     return (
         <Box maxW="xl" mx="auto" p={8}>
-            <Heading mb={6}>Groups</Heading>
+            <Heading mb={4}>Groups</Heading>
             <CreateGroup />
             {userData && (
-                <Stack spacing={5}>
-                    {allGroups.map((group) => (
+                <Stack spacing={5} mt={6}>
+                    {allGroups.filter(group => group.members.includes(userData.handle)).map((group) => (
                         <SingleGroup
                             key={group.id}
                             group={group}
