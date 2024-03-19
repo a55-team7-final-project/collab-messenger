@@ -138,7 +138,7 @@ export default function GroupDetailed() {
                         <Button colorScheme="teal" variant="solid" onClick={leaveGroup}>Leave Group</Button>}
                 </VStack>
             </Box>
-            <Box width="300px" p={5} shadow="lg" borderWidth="1px" borderRadius="md" bg="white" mt={5}>
+            <Box width="300px" p={5} shadow="lg" borderWidth="1px" borderRadius="md" bg="white" my={5}>
                 <VStack spacing={4} align="stretch">
                     <Input
                         type="text"

@@ -44,7 +44,7 @@ const CreateGroup: React.FC<CreateGroupProps> = () => {
                     
                     <Input value={group.name} onChange={handleInputChange} type="text" placeholder="Enter group name" />
                 </FormControl>
-                <Button id="create-group-button" onClick={createGroupClick} colorScheme="teal" size="md" width="100%" marginTop="20px">
+                <Button id="create-group-button" onClick={createGroupClick} colorScheme="teal" size="md" width="100%" marginTop="15px">
                     Create Group
                 </Button>
                 {errorMessage && <Text color="red.500" marginTop="10px">{errorMessage}</Text>}

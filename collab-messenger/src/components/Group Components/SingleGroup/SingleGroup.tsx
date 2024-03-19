@@ -25,8 +25,7 @@ const SingleGroup: React.FC<SingleGroupProps> = ({ group }) => {
             </Flex>
             <Flex justifyContent="space-between" mt={2}>
                 <Text>
-                    Created By: {group.owner} (
-                    {group.members && group.members[group.owner] ? group.members[group.owner].status : 'Inactive'})
+                    Created By: {group.owner}
                 </Text>
                 <Text>Channels: {Object.keys(group.channels).length}</Text>
             </Flex>

@@ -40,7 +40,7 @@ const UserSearch: React.FC = () => {
     if (userData) {    
         const chatId = await createChat(userData.uid, userId); // create a new chat when a user is clicked before navigating to the chat page
         if (chatId) {
-            navigate(`/chats/${chatId}`);
+            navigate(`/user/${userId}/chats/${chatId}`);
         } 
     }
 }

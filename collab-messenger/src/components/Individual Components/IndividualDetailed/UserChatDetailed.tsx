@@ -5,15 +5,16 @@ import { useParams } from "react-router-dom";
 import CreateIndividualChat from "../CreateMessage/CreateIndividualChat";
 import { onValue, ref } from "firebase/database";
 import { db } from "../../../config/firebase-setup";
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import { UserChatDetailed } from "../../../types/types";
-import MemberList from "../../Channel Components/MemberList/MemberList";
 import CustomEmojiPicker from "../../EmojiPicker/EmojiPicker";
+import { getUserData } from "../../../services/user-services";
 
 const UserChatDetailed: React.FC = () => {
     const { userData } = useContext(AppContext);
     const [chat, setChat] = useState<UserChatDetailed | null>(null);
-    const { chatId } = useParams<{ userId: string, chatId: string }>();
+    const [otherUser, setOtherUser] = useState(null);
+    const { chatId, userId } = useParams<{ userId: string, chatId: string }>();
 
     useEffect(() => {
         if (userData && chatId) {
@@ -39,25 +40,29 @@ const UserChatDetailed: React.FC = () => {
         }
     }, [chatId, userData]);
 
+    useEffect(() => {
+        if (userId) {
+            getUserData(userId).then(setOtherUser);
+        }
+    }, [userId]);
+
     const handleEmojiSelect = (emoji: string) => {
         console.log('Selected emoji:', emoji);
     };
 
-    return userData && chatId && (
+    return userData && chatId && otherUser && (
         <Flex direction="column" justify="space-between" minHeight="100vh">
+            <Text fontSize="2xl" fontWeight="bold">Chat With {otherUser.handle}</Text>
             <Flex>
                 <Box flex="1" overflowY="auto" pb={4}>
                     {chat ? Object.keys(chat.messages).map((userHandle, index) => {
                         return <SingleChat key={index} message={chat.messages[userHandle]} />
                     }) : <p>No messages. Be the first to write something!</p>}
                 </Box>
-                {chat && <Box width="300px">
-                    <MemberList members={chat.members} />
-                </Box>}
             </Flex>
             <Box position="sticky" bottom={0} width="100%" borderTop="1px" borderColor="gray.200" backgroundColor="white" zIndex="sticky">
                 <CreateIndividualChat />
-                <CustomEmojiPicker onSelectEmoji={handleEmojiSelect} /> 
+                <CustomEmojiPicker onSelectEmoji={handleEmojiSelect} />
             </Box>
         </Flex>
     )

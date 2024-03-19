@@ -62,7 +62,7 @@ const UserPage: React.FC<UserPageProps> = () => {
 
    
 return (
-    <Flex direction="column" align="center" justify="center" p={5} bg="teal.50" borderRadius="lg" boxShadow="md" minHeight="100vh">
+    <Flex direction="column" align="center" justify="center" p={5} bg="teal.50" borderRadius="lg" boxShadow="md" minHeight="100vh" mb={4}>
         <Avatar size="2xl" src={selectedPhotoURL || photoURL || "https://firebasestorage.googleapis.com/v0/b/forumgiphys.appspot.com/o/users%2Fdefault.jpg?alt=media&token=dfc8e521-58ee-477f-8990-28c5f9465172"} mb={4} />
         <Heading as="h2" size="lg">{userData.handle}</Heading>
         <VStack spacing={5} align="start" mt={5}>

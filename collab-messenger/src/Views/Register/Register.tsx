@@ -138,11 +138,11 @@ const Register = () => {
                 {userExists && <Text color="red.500">{userExists}</Text>}
                 {noCredentials && <Text color="red.500">{noCredentials}</Text>}
                 {isLoading ? (
-                    <Button isLoading colorScheme="teal" size="lg" fontSize="md">
+                    <Button isLoading colorScheme="teal" size="lg" fontSize="md" my={3}>
                         Registering...
                     </Button>
                 ) : (
-                    <Button onClick={register} colorScheme="teal" size="lg" fontSize="md">
+                    <Button onClick={register} colorScheme="teal" size="lg" fontSize="md" my={3}>
                         Register
                     </Button>
                 )}

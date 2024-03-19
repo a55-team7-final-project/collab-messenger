@@ -120,7 +120,7 @@ const Sidebar: React.FC = () => {
     if (setContext) {
       setContext({ user: null, userData: null });
     }
-    navigate('/home');
+    navigate('/');
   };
 
   return (

@@ -54,8 +54,8 @@ const Home: React.FC = () => {
       </Center>
       {user ? (
         <VStack spacing={8} align="stretch">
-          <Text fontSize="xl">You are logged in. Go to your <Link to="/profile">Profile</Link></Text>
-          <Box p="4" borderWidth={1} borderRadius="lg">
+          {/* <Text fontSize="xl">You are logged in. Go to your <Link to="/profile">Profile</Link></Text> */}
+          <Box p="4" borderWidth={1} borderRadius="lg" mt={8}>
             <UserSearch />
           </Box>
           <Box p="4" borderWidth={1} borderRadius="lg" _hover={{ transform: "scale(1.05)" }} transition="all 0.2s">
@@ -65,7 +65,7 @@ const Home: React.FC = () => {
           </Box>
         </VStack>
       ) : (
-        <VStack spacing={4} align="center">
+        <VStack spacing={4} align="center" minHeight="100vh">
           <Text fontSize="xl">You are not logged in.</Text>
           <Button as={Link} to="/login" colorScheme="teal" variant="outline">Login</Button>
           <Button as={Link} to="/register" colorScheme="teal">Register</Button>

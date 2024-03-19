@@ -96,7 +96,7 @@ const Login: React.FC = () => {
                     <ChakraLink as={Link} to="/profile">Access your User Profile</ChakraLink>
                 </>
             ) : (
-                <Box>
+                <Box minHeight="100vh">
                     <FormControl id="email">
                         <FormLabel>Email</FormLabel>
                         <Input
@@ -108,7 +108,7 @@ const Login: React.FC = () => {
                             isInvalid={invalidEmail}
                         />
                     </FormControl>
-                    <FormControl id="password">
+                    <FormControl id="password" mt={2}>
                         <FormLabel>Password</FormLabel>
                         <Input
                             type="password"
@@ -121,15 +121,15 @@ const Login: React.FC = () => {
                     </FormControl>
                     {noCredentials && <Text color="red.500" dangerouslySetInnerHTML={{ __html: noCredentials.replace('login', '<a href="/login">login</a>') }} />}
                     {isLoading ? (
-                        <Button isLoading colorScheme="teal" size="lg" fontSize="md">
+                        <Button isLoading colorScheme="teal" size="lg" fontSize="md" mt={3}>
                             Logging in...
                         </Button>
                     ) : (
-                        <Button onClick={login} colorScheme="teal" size="lg" fontSize="md">
+                        <Button onClick={login} colorScheme="teal" size="lg" fontSize="md" mt={3}>
                             Log in
                         </Button>
                     )}
-                    <Text>You do not have an account? <ChakraLink as={Link} to="/register">Register</ChakraLink></Text>
+                    <Text mt={2}>You do not have an account? <ChakraLink as={Link} to="/register">Register</ChakraLink></Text>
                 </Box>
             )}
         </VStack>
