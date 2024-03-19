@@ -2,7 +2,7 @@ import { useContext, useState } from "react"
 import { AppContext } from "../../../context/AppContext"
 import { addGroupChannel } from "../../../services/group-services";
 import { useParams } from "react-router-dom";
-import { Alert, Button, FormControl, FormLabel, Input, Radio, RadioGroup, Stack, VStack } from "@chakra-ui/react";
+import { Alert, Button, FormControl, FormLabel, Input, Checkbox, VStack, Box } from "@chakra-ui/react";
 
 export default function CreateChannel () {
 
@@ -25,8 +25,8 @@ export default function CreateChannel () {
         setErrorMessage(null);
     }
 
-    const handleRadioChange = (e) => {
-        setChannel({...channel, publicity: e.target.value === 'public'});
+    const handleCheckboxChange = (e) => {
+        setChannel({ ...channel, publicity: !e.target.checked });
     }
 
     const createChannelClick = async () => {
@@ -47,12 +47,9 @@ export default function CreateChannel () {
                     <FormLabel>Channel Name</FormLabel>
                     <Input value={channel.name} onChange={handleInputChange} placeholder="Enter channel name" bg="white" />
                 </FormControl>
-                <RadioGroup onChange={handleRadioChange} defaultValue="public">
-                    <Stack direction="row">
-                        <Radio colorScheme="green" value="public">Public</Radio>
-                        <Radio colorScheme="red" value="private">Private</Radio>
-                    </Stack>
-                </RadioGroup>
+                <Box display="flex" alignItems="center">
+                    <Checkbox colorScheme={channel.publicity ? "green" : "red"} onChange={handleCheckboxChange} isChecked={!channel.publicity}>Private</Checkbox>
+                </Box>
                 <Button colorScheme="teal" id="create-channel-button" onClick={createChannelClick}>Create Channel</Button>
                 {errorMessage && <Alert status="error">{errorMessage}</Alert>}
             </VStack>
