@@ -1,9 +1,9 @@
 import { useContext, useEffect, useState } from "react"
 import { AppContext } from "../../../context/AppContext";
-import SingleChat from "../SingleChatText/SingleChat";
+import SingleChat from "../SingleChat/SingleChat";
 import { onValue, ref } from "firebase/database";
 import { db } from "../../../config/firebase-setup";
-import { getUserData } from "../../../services/user-services";
+import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 
 const AllChats: React.FC = () => {
     const { userData } = useContext(AppContext);
@@ -11,18 +11,10 @@ const AllChats: React.FC = () => {
 
     useEffect(() => {
         if (userData) {
-            const chatsRef = ref(db, `users/${userData.uid}/messages`);
+            const chatsRef = ref(db, `chats`);
             const unsubscribe = onValue(chatsRef, async (snapshot) => {
                 if (snapshot.exists()) {
-                    const chats = await Promise.all(Object.entries(snapshot.val()).map(async ([key, value]) => {
-                        const user = await getUserData(key); // fetch the user data based on userId
-                        return {
-                            id: key,
-                            ...value,
-                            createdOn: new Date(value.createdOn),
-                            user, // add the user data to the chat object
-                        };
-                    }));
+                    const chats = Object.keys(snapshot.val()).filter(chatUsers => chatUsers.split('_').includes(userData.uid));
                     setAllChats(chats);
                 } else {
                     setAllChats([]);
@@ -34,11 +26,12 @@ const AllChats: React.FC = () => {
     
 
     return allChats && userData && (
-        <>
-            {allChats.map((chat, index) => {
-                return <SingleChat key={index} chat={chat} user={chat.user} /> // pass user prop to SingleChat
+        <Box minHeight="100vh">
+            <Text fontSize="2xl" fontWeight="bold" mb={5}>My Chats</Text>
+            {allChats.map((chatId, index) => {
+                return <SingleChat key={index} chatId={chatId} userId={chatId.split('_').filter(userId => userId !== userData.uid)[0]} />
             })}
-        </>
+        </Box>
     )
 }
 

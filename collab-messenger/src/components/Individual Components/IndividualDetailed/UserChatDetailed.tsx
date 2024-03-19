@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../../context/AppContext";
-import SingleChat from "../SingleChatText/SingleChat";
+import SingleChat from "../SingleChat/SingleChat";
 import { useParams } from "react-router-dom";
 import CreateIndividualChat from "../CreateMessage/CreateIndividualChat";
 import { onValue, ref } from "firebase/database";
@@ -49,9 +49,7 @@ const UserChatDetailed: React.FC = () => {
 
     return userData && chatId && (
         <Flex direction="column" justify="space-between" minHeight="100vh">
-            {otherUser ? <Text fontSize="2xl" fontWeight="bold">Chat With {otherUser.handle}</Text> :
-            <Text fontSize="2xl" fontWeight="bold">Messaging Yourself</Text>}
-            <Flex>
+            {otherUser && <Text fontSize="2xl" fontWeight="bold">Chat With {otherUser.handle}</Text>}            <Flex>
                 <Box flex="1" overflowY="auto" pb={4}>
                     {chat ? Object.keys(chat.messages).map((userHandle, index) => {
                         return <SingleChannelText key={index} message={chat.messages[userHandle]} />
