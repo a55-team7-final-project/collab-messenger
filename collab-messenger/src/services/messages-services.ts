@@ -2,11 +2,8 @@ import {
     ref,
     push,
     get,
-    query,
-    equalTo,
-    orderByChild,
-    update,
     set,
+    update,
 } from "firebase/database";
 import { db } from "../config/firebase-setup";
 
@@ -49,27 +46,18 @@ export const addIndividualMessage = async (chatID: string, userHandle: string, t
     }
 };
 
+export const editMessage = async (chatID: string, messageID: string, newText: string) => {
+    try {
+        const messageRef = ref(db, `chats/${chatID}/${messageID}`);
 
-
-
-
-export const likePost = (handle, postId) => {
-    const updateLikes = {};
-    updateLikes[`/posts/${postId}/likedBy/${handle}`] = true;
-    updateLikes[`/users/${handle}/likedPosts/${postId}`] = true;
-
-    return update(ref(db), updateLikes);
+        await update(messageRef, {
+            text: newText,
+            editedOn: Date.now(),
+        });
+        return true;
+        
+    } catch (error) {
+        console.error("Error editing message:", error);
+        return false;
+    }
 };
-
-
-export const dislikePost = (handle, postId) => {
-    const updateLikes = {};
-    updateLikes[`/posts/${postId}/likedBy/${handle}`] = null;
-    updateLikes[`/users/${handle}/likedPosts/${postId}`] = null;
-
-    return update(ref(db), updateLikes);
-};
-
-export const deleteMessage = async (postId) => {
-    return set(ref(db, `posts/${postId}`), null);
-  };

@@ -1,4 +1,4 @@
-import { Box, Flex, Heading, Button } from "@chakra-ui/react";
+import { Button } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { getUserData } from "../../../services/user-services";
 import { useNavigate } from "react-router-dom";

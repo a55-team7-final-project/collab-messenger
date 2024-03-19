@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../../context/AppContext";
-import SingleChat from "../SingleChat/SingleChat";
 import { useParams } from "react-router-dom";
 import CreateIndividualChat from "../CreateMessage/CreateIndividualChat";
 import { onValue, ref } from "firebase/database";
@@ -10,6 +9,7 @@ import { UserChatDetailed } from "../../../types/types";
 import CustomEmojiPicker from "../../EmojiPicker/EmojiPicker";
 import { getUserData } from "../../../services/user-services";
 import SingleChannelText from "../../Channel Components/SIngleChannelText/SingleChannelText";
+import { EditSingleText } from "../../Individual Components/EditSingleText/EditSingleText";
 
 const UserChatDetailed: React.FC = () => {
     const { userData } = useContext(AppContext);

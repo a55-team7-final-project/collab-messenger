@@ -35,6 +35,7 @@ export type Channel = {
 
 export type IndividualChat = {
     id: string;
+    chatID: string;
     userHandle: string;
     text: string;
     createdOn: Date;
