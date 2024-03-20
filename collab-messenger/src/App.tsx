@@ -7,7 +7,7 @@ import { getUserData, getUserByHandle } from './services/user-services';
 import Register from './Views/Register/Register';
 import Home from './Views/Home/Home';
 import Sidebar from './components/SideBar/Sidebar';
-import Footer from './components/Footer/Footer';
+// import Footer from './components/Footer/Footer';
 import { User } from './types/types';
 import { User as FirebaseUser } from 'firebase/auth';
 import { AppContext } from './context/AppContext';
@@ -96,14 +96,14 @@ const App: FC = () => {
           <Route path="/groups" element={<AllGroups />} />
           <Route path="/groups/create" element={<CreateGroup />} />
           <Route path="/groups/:groupId" element={<GroupDetailed />} />
-          <Route path="/chats/:chatId" element={<UserChatDetailed />} />
           <Route path="/chats" element={<AllChats />} />
+          <Route path="/chats/:chatId" element={<UserChatDetailed />} />
           <Route path="/users" element={<Users />} />
           <Route path="/groups/:groupId/channels/:channelId" element={<ChannelDetailed />} />
           <Route path="/profile" element={<UserPage userId={appContext.user?.uid || ''} />} />
           <Route path="/profile/edit" element={<EditProfile />} />
         </Routes>
-        <Footer />
+        {/* <Footer /> */}
       </BrowserRouter>
     </AppContext.Provider>
   );
