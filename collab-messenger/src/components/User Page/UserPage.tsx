@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from 'react';
-import { getUserByHandle, uploadImage, updateUserDetails } from '../../services/user-services';
+import { getUserByHandle, uploadImage, updateUserDetails, saveProfilePictureUrl } from '../../services/user-services';
 import { useNavigate } from 'react-router-dom';
 import { AppContext } from '../../context/AppContext';
 import { Box, Button, Flex, Input, Stack, VStack, Avatar, Heading, Tag, TagLabel, TagLeftIcon, TagRightIcon, Tooltip, Spacer } from '@chakra-ui/react';
@@ -21,15 +21,12 @@ const UserPage: React.FC<UserPageProps> = () => {
         const fetchData = async () => {
             if (userData) {
                 const userProfile = await getUserByHandle(userData.handle);
-                if (userProfile.exists()) {
-                    const profileData = userProfile.val();
-                    if (profileData.photoURL) {
-                        setPhotoURL(profileData.photoURL);
-                    }
+                if (userProfile && userProfile.photoURL) {
+                    setPhotoURL(userProfile.photoURL);
                 }
             }
         };
-
+    
         fetchData();
     }, [userData]);
 
@@ -48,6 +45,7 @@ const UserPage: React.FC<UserPageProps> = () => {
                     setPhotoURL(downloadURL || '');
                     setSelectedPhotoURL(null);
                     setStatusMessage('Photo uploaded successfully!');
+                    await saveProfilePictureUrl(userData.handle, downloadURL || '');
                 }
             } catch (error) {
                 console.error("Error uploading the file", error);
