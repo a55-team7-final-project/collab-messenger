@@ -113,7 +113,7 @@ const Sidebar: React.FC = () => {
             <IconButton aria-label="Groups" icon={<FaSteam />} variant="ghost" color="teal.500" />
             <Text>Groups</Text>
           </Link>
-          <Link to={`/chats/${user?.uid}`}>
+          <Link to={`/chats`}>
             <IconButton aria-label="Chats" icon={<FaSteam />} variant="ghost" color="teal.500" />
             <Text>Chats</Text>
           </Link>
