@@ -8,6 +8,7 @@ export type User = {
     lastName: string;
     createdOn: string;
     status: 'online' | 'offline' | 'busy' | 'away' | 'in a meeting';
+    photoURL?: string;
 }
 
 export type Meeting = {

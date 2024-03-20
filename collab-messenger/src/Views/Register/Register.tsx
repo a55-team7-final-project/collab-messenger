@@ -4,6 +4,7 @@ import { registerUser, validateEmail, validatePassword, emailExist } from "../..
 import { createUserHandle, getUserByHandle } from "../../services/user-services";
 import './Register.css';
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Box, Button, FormControl, FormLabel, Input, Text, VStack, Link as ChakraLink } from "@chakra-ui/react";
 // import "firebase/messaging";
 
@@ -61,7 +62,7 @@ const Register = () => {
             setErrorMessage('This email is already in use. Choose another email.');
             return;
         }
-        
+
         setIsLoading(true);
 
         try {
@@ -72,23 +73,23 @@ const Register = () => {
                 return;
             }
             const credentials = await registerUser(form.email, form.password) as { user: { uid: string } };
-            
+
             // New user successfully registered, now set up notifications
-        // messaging().requestPermission()
-        // .then(() => {
-        //     console.log('Notification permission granted.');
-        //     // Get the token that identifies this device
-        //     return messaging().getToken();
-        // })
-        // .then(token => {
-        //     console.log('FCM Token:', token);
-        //     // Save this token on your server for this client to send notifications in the future
-        //     // For example, you might have a /users/{userId}/fcmToken node in your database
-        //     // ...
-        // })
-        // .catch(error => {
-        //     console.error('Unable to get permission to notify.', error);
-        // });
+            // messaging().requestPermission()
+            // .then(() => {
+            //     console.log('Notification permission granted.');
+            //     // Get the token that identifies this device
+            //     return messaging().getToken();
+            // })
+            // .then(token => {
+            //     console.log('FCM Token:', token);
+            //     // Save this token on your server for this client to send notifications in the future
+            //     // For example, you might have a /users/{userId}/fcmToken node in your database
+            //     // ...
+            // })
+            // .catch(error => {
+            //     console.error('Unable to get permission to notify.', error);
+            // });
 
             navigate('/');
             await createUserHandle(form.username, credentials.user.uid, form.email, form.firstName, form.lastName, form.phoneNumber);
@@ -146,11 +147,12 @@ const Register = () => {
                         Register
                     </Button>
                 )}
+                <Text mt={2}>You already have an account? <ChakraLink as={Link} to="/login">Log In</ChakraLink></Text>
             </Box>
         </VStack>
     );
-    
-      
+
+
 }
 
 
