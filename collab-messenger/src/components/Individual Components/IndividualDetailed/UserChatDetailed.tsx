@@ -51,7 +51,7 @@ const UserChatDetailed: React.FC = () => {
     };
 
     return userData && chatId && (
-        <Flex direction="column" justify="space-between" minHeight="100vh">
+        <Flex direction="column" minHeight="100vh">
             {otherUser && <Text fontSize="2xl" fontWeight="bold">Chat With {otherUser.handle}</Text>}            <Flex>
                 <Box flex="1" overflowY="auto" pb={4}>
                     {chat ? Object.keys(chat.messages).map((userHandle, index) => {
@@ -61,7 +61,6 @@ const UserChatDetailed: React.FC = () => {
             </Flex>
             <Box position="sticky" bottom={0} width="100%" borderTop="1px" borderColor="gray.200" backgroundColor="white" zIndex="sticky">
                 <CreateIndividualChat />
-                <CustomEmojiPicker onSelectEmoji={handleEmojiSelect} />
             </Box>
         </Flex>
     )
