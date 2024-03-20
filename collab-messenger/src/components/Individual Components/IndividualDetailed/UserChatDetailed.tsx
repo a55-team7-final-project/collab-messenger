@@ -15,6 +15,7 @@ const UserChatDetailed: React.FC = () => {
     const { userData } = useContext(AppContext);
     const [chat, setChat] = useState<UserChatDetailed | null>(null);
     const [otherUser, setOtherUser] = useState(null);
+    const [message, setMessage] = useState('');
     const { chatId } = useParams<{ userId: string, chatId: string }>();
 
     useEffect(() => {
@@ -34,7 +35,9 @@ const UserChatDetailed: React.FC = () => {
                     };
                     setChat(chat);
                     const userId = chatId.split('_').filter(id => id !== userData.uid)[0];
-                    getUserData(userId).then(setOtherUser);
+                    if (userId) {
+                        getUserData(userId).then(setOtherUser);
+                    }
                 } else {
                     setChat(null);
                 }
@@ -44,7 +47,7 @@ const UserChatDetailed: React.FC = () => {
     }, [chatId, userData]);
 
     const handleEmojiSelect = (emoji: string) => {
-        console.log('Selected emoji:', emoji);
+        setMessage(prevMessage => prevMessage + emoji);
     };
 
     return userData && chatId && (
